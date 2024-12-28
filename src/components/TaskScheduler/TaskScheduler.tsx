@@ -1,39 +1,102 @@
-import dayjs from 'dayjs';
-import { Event, generateTimeSlots, Scheduler, User } from 'mantine-scheduler';
-import { Anchor, Text, Title } from '@mantine/core';
-import classes from './Welcome.module.css';
+import React, { useState } from 'react';
+import { formatDate } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { createEventId, INITIAL_EVENTS } from './event-utils';
 
 export function TaskScheduler() {
-  // Define a list of users of whom have events
-  const users: User[] = [{ id: 1, name: 'John Doe', avatar: 'https://i.pravatar.cc/150?img=1' }];
+  const [weekendsVisible, setWeekendsVisible] = useState(true);
+  const [currentEvents, setCurrentEvents] = useState([]);
 
-  // Define a list of events for the given users
-  const events: Event[] = [
-    {
-      id: 1,
-      userId: 1,
-      startTime: '9:00 AM',
-      endTime: '10:00 AM',
-      title: 'Meeting',
-      color: 'blue',
-    },
-    {
-      id: 2,
-      userId: 1,
-      startTime: '2:00 PM',
-      endTime: '4:00 PM',
-      title: 'Project Work',
-      color: 'green',
-    },
-  ];
+  function handleWeekendsToggle() {
+    setWeekendsVisible(!weekendsVisible);
+  }
 
-  // Generate time slots for the scheduler
-  // NOTE: generateTimeSlots is a helper method we provide
-  const timeSlots = generateTimeSlots({
-    start: '9:00 AM',
-    end: '5:30 PM',
-    interval: 30,
-  });
+  function handleDateSelect(selectInfo: any) {
+    // let title = prompt('Please enter a new title for your event');
+    let title = 'New Event';
+    let calendarApi = selectInfo.view.calendar;
 
-  return <Scheduler date={dayjs()} timeSlots={timeSlots} events={events} users={users} />;
+    calendarApi.unselect(); // clear date selection
+
+    if (title) {
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay,
+      });
+    }
+  }
+
+  function handleEventClick(clickInfo: any) {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove();
+    }
+  }
+
+  function handleEvents(events: any) {
+    setCurrentEvents(events);
+  }
+
+  return (
+    <div className="demo-app">
+      {/* <Sidebar
+        weekendsVisible={weekendsVisible}
+        handleWeekendsToggle={handleWeekendsToggle}
+        currentEvents={currentEvents}
+      /> */}
+      <div className="demo-app-main">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={weekendsVisible}
+          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          select={handleDateSelect}
+          eventContent={renderEventContent} // custom render function
+          eventClick={handleEventClick}
+          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          /* you can update a remote database when these fire:
+          eventAdd={function(){}}
+          eventChange={function(){}}
+          eventRemove={function(){}}
+          */
+        />
+      </div>
+    </div>
+  );
+}
+
+function renderEventContent(eventInfo: any) {
+  return (
+    <>
+      <b>{eventInfo.timeText}</b>
+      <i>{eventInfo.event.title}</i>
+    </>
+  );
+}
+
+function Sidebar({ weekendsVisible, handleWeekendsToggle, currentEvents }: any) {
+  return <div className="demo-app-sidebar"></div>;
+}
+
+function SidebarEvent({ event }: any) {
+  return (
+    <li key={event.id}>
+      <b>{formatDate(event.start, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
+      <i>{event.title}</i>
+    </li>
+  );
 }

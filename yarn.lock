@@ -805,6 +805,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fullcalendar/core@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/core@npm:6.1.15"
+  dependencies:
+    preact: "npm:~10.12.1"
+  checksum: 10c0/628445dcbfcf9c5a4012cde3ba814af7b74db66c4ec71743fe9c5f5376f96d4b18922d257ad8d5ccf1211b2415d1094dd05e2f4f3324d4dbe880a94f7e5793b7
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/daygrid@npm:^6.1.15, @fullcalendar/daygrid@npm:~6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/daygrid@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: 10c0/52ba7a479675aa8e2bd36ca6c00c9cc28f11539710cf7a233e8657835b29fe21954e732a23c9b7c7c345c5b6b3c08e3af24ce9125ec28478176cce1b3e7d0da4
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/interaction@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/interaction@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: 10c0/f9e2542965b3d28a4eb65638a21d036d883399956781649f5442c2fb681ee59ea5fb071779be04acb88afed9278d38fc6f5758dc8a6dfa1d7b90cb6858a0115e
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/react@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/react@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+    react: ^16.7.0 || ^17 || ^18 || ^19
+    react-dom: ^16.7.0 || ^17 || ^18 || ^19
+  checksum: 10c0/8185159c2fa02b31012b84c19f340b835383858d04079bcfb5ccbd1967116d862dbdb863762d99c374433a5364873727fc6f9d7356b2b1d1866ae5d50819ff6e
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timegrid@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/timegrid@npm:6.1.15"
+  dependencies:
+    "@fullcalendar/daygrid": "npm:~6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: 10c0/0ad1012fdbd8dbd3b4f71e015186393863d3d7b627ac8306049263c7814137ffd6bab80732071f4750ee63e7e2a97fa935be7fc54970d6edabda14f26a59e076
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -2812,7 +2861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.12, dayjs@npm:^1.11.13":
+"dayjs@npm:^1.11.13":
   version: 1.11.13
   resolution: "dayjs@npm:1.11.13"
   checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
@@ -5106,25 +5155,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mantine-scheduler@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "mantine-scheduler@npm:0.0.7"
-  dependencies:
-    dayjs: "npm:^1.11.12"
-  peerDependencies:
-    "@mantine/core": ^7.11.2
-    "@mantine/hooks": ^7.11.2
-    react: ^18.3.1
-    react-dom: ^18.3.1
-  checksum: 10c0/6b5df9729456bc13c4e461ff2b335e15707b60a10262255118aaeb80b044fcfc4c6c3232f857f16467b5f8566b372f512ad255d6a529ab343e0722f0033211b1
-  languageName: node
-  linkType: hard
-
 "mantine-vite-template@workspace:.":
   version: 0.0.0-use.local
   resolution: "mantine-vite-template@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.15.0"
+    "@fullcalendar/core": "npm:^6.1.15"
+    "@fullcalendar/daygrid": "npm:^6.1.15"
+    "@fullcalendar/interaction": "npm:^6.1.15"
+    "@fullcalendar/react": "npm:^6.1.15"
+    "@fullcalendar/timegrid": "npm:^6.1.15"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.4.0"
     "@mantine/core": "npm:7.15.2"
     "@mantine/hooks": "npm:7.15.2"
@@ -5147,7 +5187,6 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.2"
     identity-obj-proxy: "npm:^3.0.0"
     jsdom: "npm:^25.0.1"
-    mantine-scheduler: "npm:^0.0.7"
     postcss: "npm:^8.4.49"
     postcss-preset-mantine: "npm:1.17.0"
     postcss-simple-vars: "npm:^7.0.1"
@@ -5891,6 +5930,13 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/f1b3f17aaf36d136f59ec373459f18129908235e65dbdc3aee5eef8eba0756106f52de5ec4682e29a2eab53eb25170e7e871b3e4b52a8f1de3d344a514306be3
+  languageName: node
+  linkType: hard
+
+"preact@npm:~10.12.1":
+  version: 10.12.1
+  resolution: "preact@npm:10.12.1"
+  checksum: 10c0/c77a55e897dcf298b7aa13637fed29744d3cf6c083f2832856e8551dbf27303c8b6946569736de16b05cba15c0e44ad404beb236ad9e36583a6fc5e2efad7777
   languageName: node
   linkType: hard
 
