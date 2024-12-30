@@ -10,7 +10,7 @@ export default function App() {
   const navigate = useNavigate();
   return (
     <LanguageProvider>
-      <MantineProvider theme={theme}>
+      <MantineProvider theme={theme} defaultColorScheme="light">
         <AppShell header={{ height: 40 }}>
           <AppShell.Header>
             <Container>

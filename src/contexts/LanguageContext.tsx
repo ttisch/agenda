@@ -27,11 +27,24 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
+    const saved = localStorage.getItem('planner-language');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      const found = languages.find((lang) => lang.code === parsed.code);
+      if (found) {
+        return found;
+      }
+    }
+    return languages[0];
+  });
 
   const value = {
     currentLanguage,
-    setLanguage: setCurrentLanguage,
+    setLanguage: (language: Language) => {
+      setCurrentLanguage(language);
+      localStorage.setItem('planner-language', JSON.stringify(language));
+    },
     availableLanguages: languages,
   };
 
