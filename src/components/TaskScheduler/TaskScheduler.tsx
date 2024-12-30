@@ -55,14 +55,14 @@ export function TaskScheduler() {
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            right: 'timeGridWeek',
           }}
-          initialView="dayGridMonth"
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          weekends={weekendsVisible}
+          initialView="timeGridWeek"
+          editable
+          selectable
+          selectMirror
+          dayMaxEvents
+          weekends={false}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
@@ -82,7 +82,7 @@ export function TaskScheduler() {
 function renderEventContent(eventInfo: any) {
   return (
     <>
-      <b>{eventInfo.timeText}</b>
+      <b>{eventInfo.timeText}&nbsp;</b>
       <i>{eventInfo.event.title}</i>
     </>
   );
