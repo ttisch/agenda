@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { formatDate } from '@fullcalendar/core';
+import deLocale from '@fullcalendar/core/locales/de';
+import enLocale from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { createEventId, INITIAL_EVENTS } from './event-utils';
 
 export function TaskScheduler() {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
   const [currentEvents, setCurrentEvents] = useState([]);
+  const { currentLanguage } = useLanguage();
 
   function handleWeekendsToggle() {
     setWeekendsVisible(!weekendsVisible);
@@ -51,6 +55,8 @@ export function TaskScheduler() {
       /> */}
       <div className="demo-app-main">
         <FullCalendar
+          locales={[deLocale, enLocale]}
+          locale={currentLanguage.code}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: 'prev,next today',
@@ -63,16 +69,11 @@ export function TaskScheduler() {
           selectMirror
           dayMaxEvents
           weekends={false}
-          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={INITIAL_EVENTS}
           select={handleDateSelect}
-          eventContent={renderEventContent} // custom render function
+          eventContent={renderEventContent}
           eventClick={handleEventClick}
-          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-          /* you can update a remote database when these fire:
-          eventAdd={function(){}}
-          eventChange={function(){}}
-          eventRemove={function(){}}
-          */
+          eventsSet={handleEvents}
         />
       </div>
     </div>
