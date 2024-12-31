@@ -1,60 +1,137 @@
-import React, { useState } from 'react';
-import { formatDate } from '@fullcalendar/core';
+import React, { useEffect, useState } from 'react';
 import deLocale from '@fullcalendar/core/locales/de';
 import enLocale from '@fullcalendar/core/locales/en-gb';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { createEventId, INITIAL_EVENTS } from './event-utils';
+import { Button, Group, Modal } from '@mantine/core';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { addEvent, deleteEvent, getEvents } from '../../services/database';
+import { createEventId } from './event-utils';
+
+interface DatabaseEvent {
+  id: string;
+  title: string;
+  start: string;
+  end?: string;
+  all_day?: boolean | string;
+}
+
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  eventTitle: string;
+}
+
+function DeleteConfirmationModal({ isOpen, onClose, onConfirm, eventTitle }: DeleteModalProps) {
+  return (
+    <Modal opened={isOpen} onClose={onClose} title="Delete Event" centered>
+      <p>Are you sure you want to delete the event '{eventTitle}'?</p>
+      <Group justify="flex-end" mt="md">
+        <Button variant="light" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button color="red" onClick={onConfirm}>
+          Delete
+        </Button>
+      </Group>
+    </Modal>
+  );
+}
 
 export function TaskScheduler() {
-  const [weekendsVisible, setWeekendsVisible] = useState(true);
-  const [currentEvents, setCurrentEvents] = useState([]);
+  const [_currentEvents, setCurrentEvents] = useState<any[]>([]);
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    eventToDelete: null as any,
+  });
   const { currentLanguage } = useLanguage();
+  const calendarRef = React.useRef<any>(null);
 
-  function handleWeekendsToggle() {
-    setWeekendsVisible(!weekendsVisible);
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  async function loadEvents() {
+    try {
+      const events = (await getEvents()) as DatabaseEvent[];
+      const calendarApi = calendarRef.current?.getApi();
+      if (calendarApi) {
+        calendarApi.removeAllEvents();
+        events.forEach((event) => {
+          calendarApi.addEvent({
+            id: event.id,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.all_day && event?.all_day === 'true',
+          });
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load events:', error);
+    }
   }
 
-  function handleDateSelect(selectInfo: any) {
-    // let title = prompt('Please enter a new title for your event');
-    let title = 'New Event';
-    let calendarApi = selectInfo.view.calendar;
+  async function handleDateSelect(selectInfo: any) {
+    const title = 'New Event';
+    const calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
     if (title) {
-      calendarApi.addEvent({
+      const newEvent = {
         id: createEventId(),
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
         allDay: selectInfo.allDay,
-      });
+      };
+
+      try {
+        await addEvent(newEvent);
+        calendarApi.addEvent(newEvent);
+      } catch (error) {
+        console.error('Failed to add event:', error);
+      }
     }
   }
 
   function handleEventClick(clickInfo: any) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+    setDeleteModal({
+      isOpen: true,
+      eventToDelete: clickInfo.event,
+    });
   }
 
-  function handleEvents(events: any) {
+  async function handleDeleteConfirm() {
+    const event = deleteModal.eventToDelete;
+    if (event) {
+      try {
+        await deleteEvent(event.id);
+        event.remove();
+      } catch (error) {
+        console.error('Failed to delete event:', error);
+      }
+    }
+    setDeleteModal({ isOpen: false, eventToDelete: null });
+  }
+
+  function handleDeleteCancel() {
+    setDeleteModal({ isOpen: false, eventToDelete: null });
+  }
+
+  function handleEvents(events: any[]) {
     setCurrentEvents(events);
   }
 
   return (
     <div className="demo-app">
-      {/* <Sidebar
-        weekendsVisible={weekendsVisible}
-        handleWeekendsToggle={handleWeekendsToggle}
-        currentEvents={currentEvents}
-      /> */}
       <div className="demo-app-main">
         <FullCalendar
+          ref={calendarRef}
           locales={[deLocale, enLocale]}
           locale={currentLanguage.code}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -69,11 +146,16 @@ export function TaskScheduler() {
           selectMirror
           dayMaxEvents
           weekends={false}
-          initialEvents={INITIAL_EVENTS}
           select={handleDateSelect}
           eventContent={renderEventContent}
           eventClick={handleEventClick}
           eventsSet={handleEvents}
+        />
+        <DeleteConfirmationModal
+          isOpen={deleteModal.isOpen}
+          onClose={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+          eventTitle={deleteModal.eventToDelete?.title || ''}
         />
       </div>
     </div>
@@ -86,18 +168,5 @@ function renderEventContent(eventInfo: any) {
       <b>{eventInfo.timeText}&nbsp;</b>
       <i>{eventInfo.event.title}</i>
     </>
-  );
-}
-
-function Sidebar({ weekendsVisible, handleWeekendsToggle, currentEvents }: any) {
-  return <div className="demo-app-sidebar"></div>;
-}
-
-function SidebarEvent({ event }: any) {
-  return (
-    <li key={event.id}>
-      <b>{formatDate(event.start, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <i>{event.title}</i>
-    </li>
   );
 }
