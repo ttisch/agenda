@@ -140,6 +140,12 @@ export function TaskScheduler() {
             center: 'title',
             right: 'timeGridWeek',
           }}
+          businessHours={{
+            daysOfWeek: [1, 2, 3, 4, 5], // Monday - Thursday
+            startTime: '07:00', // a start time (10am in this example)
+            endTime: '16:00',
+          }}
+          nowIndicator
           initialView="timeGridWeek"
           editable
           selectable
