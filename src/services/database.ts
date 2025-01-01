@@ -4,10 +4,10 @@ let db: Database | null = null;
 
 export async function initDatabase() {
   if (!db) {
-    db = await Database.load('sqlite:planner1.db');
+    db = await Database.load('sqlite:planner2.db');
     await db.execute(`
       CREATE TABLE IF NOT EXISTS events (
-        id TEXT PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         start TEXT NOT NULL,
         end TEXT,
@@ -26,7 +26,7 @@ export async function getEvents() {
 }
 
 export async function addEvent(event: {
-  id: string;
+  id: number;
   title: string;
   start: string;
   end?: string;

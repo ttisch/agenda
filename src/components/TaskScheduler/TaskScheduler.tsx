@@ -8,15 +8,14 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { Button, Group, Modal } from '@mantine/core';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
-import { createEventId } from './event-utils';
 
 interface DatabaseEvent {
-  id: string;
+  id: number;
   title: string;
   start: string;
   end?: string;
   all_day?: boolean | string;
-  done?: boolean;
+  done?: boolean | string;
 }
 
 interface DeleteModalProps {
@@ -68,9 +67,9 @@ export function TaskScheduler() {
             start: event.start,
             end: event.end,
             allDay: event.all_day && event?.all_day === 'true',
-            backgroundColor: event.done ? '#d3d3d3' : 'blue',
-            borderColor: event.done ? '#b0b0b0' : 'blue',
-            extendedProps: { done: event.done },
+            backgroundColor: event.done && event.done === 'true' ? '#d3d3d3' : 'blue',
+            borderColor: event.done && event.done === 'true' ? '#b0b0b0' : 'blue',
+            extendedProps: { done: event.done && event.done === 'true' },
           });
         });
       }
@@ -87,7 +86,7 @@ export function TaskScheduler() {
 
     if (title) {
       const newEvent = {
-        id: createEventId(),
+        // id: createEventId(),
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
@@ -175,7 +174,7 @@ export function TaskScheduler() {
 function renderEventContent(eventInfo: any) {
   console.log(eventInfo);
   console.log(eventInfo.event.extendedProps);
-  const isDone = eventInfo.event.extendedProps.done;
+  const isDone = eventInfo.event.extendedProps.done as boolean;
   return (
     <>
       <b>{eventInfo.timeText}&nbsp;</b>
