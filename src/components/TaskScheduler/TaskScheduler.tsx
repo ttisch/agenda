@@ -7,7 +7,7 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Button, Group, Modal } from '@mantine/core';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { addEvent, deleteEvent, getEvents } from '../../services/database';
+import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
 import { createEventId } from './event-utils';
 
 interface DatabaseEvent {
@@ -171,20 +171,27 @@ export function TaskScheduler() {
 function renderEventContent(eventInfo: any) {
   console.log(eventInfo);
   console.log(eventInfo.event.extendedProps);
+  const isDone = eventInfo.event.extendedProps.done;
   return (
-    <>
+    <div style={{ backgroundColor: isDone ? '#d3d3d3' : 'inherit' }}>
       <b>{eventInfo.timeText}&nbsp;</b>
       <Button
         size="compact-xs"
         color="grey"
         variant="default"
-        onClick={() => {
-          eventInfo.event.setExtendedProp('done', !eventInfo.event.extendedProps.done);
+        onClick={async () => {
+          const newDoneStatus = !isDone;
+          eventInfo.event.setExtendedProp('done', newDoneStatus);
+          try {
+            await updateEventDoneStatus(eventInfo.event.id, newDoneStatus);
+          } catch (error) {
+            console.error('Failed to update event done status:', error);
+          }
         }}
       >
         Done
       </Button>{' '}
       <i>{eventInfo.event.title}</i>
-    </>
+    </div>
   );
 }
