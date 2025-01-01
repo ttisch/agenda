@@ -169,9 +169,21 @@ export function TaskScheduler() {
 }
 
 function renderEventContent(eventInfo: any) {
+  console.log(eventInfo);
+  console.log(eventInfo.event.extendedProps);
   return (
     <>
       <b>{eventInfo.timeText}&nbsp;</b>
+      <Button
+        size="compact-xs"
+        color="grey"
+        variant="default"
+        onClick={() => {
+          eventInfo.event.setExtendedProp('done', !eventInfo.event.extendedProps.done);
+        }}
+      >
+        Done
+      </Button>{' '}
       <i>{eventInfo.event.title}</i>
     </>
   );
