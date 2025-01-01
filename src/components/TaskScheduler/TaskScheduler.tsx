@@ -16,6 +16,7 @@ interface DatabaseEvent {
   start: string;
   end?: string;
   all_day?: boolean | string;
+  done?: boolean;
 }
 
 interface DeleteModalProps {
@@ -67,6 +68,9 @@ export function TaskScheduler() {
             start: event.start,
             end: event.end,
             allDay: event.all_day && event?.all_day === 'true',
+            backgroundColor: event.done ? '#d3d3d3' : 'blue',
+            borderColor: event.done ? '#b0b0b0' : 'blue',
+            extendedProps: { done: event.done },
           });
         });
       }
@@ -173,7 +177,7 @@ function renderEventContent(eventInfo: any) {
   console.log(eventInfo.event.extendedProps);
   const isDone = eventInfo.event.extendedProps.done;
   return (
-    <div style={{ backgroundColor: isDone ? '#d3d3d3' : 'inherit' }}>
+    <>
       <b>{eventInfo.timeText}&nbsp;</b>
       <Button
         size="compact-xs"
@@ -182,6 +186,8 @@ function renderEventContent(eventInfo: any) {
         onClick={async () => {
           const newDoneStatus = !isDone;
           eventInfo.event.setExtendedProp('done', newDoneStatus);
+          eventInfo.event.setProp('backgroundColor', newDoneStatus ? '#d3d3d3' : 'blue');
+          eventInfo.event.setProp('borderColor', newDoneStatus ? '#b0b0b0' : 'blue');
           try {
             await updateEventDoneStatus(eventInfo.event.id, newDoneStatus);
           } catch (error) {
@@ -192,6 +198,6 @@ function renderEventContent(eventInfo: any) {
         Done
       </Button>{' '}
       <i>{eventInfo.event.title}</i>
-    </div>
+    </>
   );
 }
