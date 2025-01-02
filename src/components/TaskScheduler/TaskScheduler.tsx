@@ -7,6 +7,7 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Button, Group, Modal } from '@mantine/core';
+import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
 
@@ -49,6 +50,7 @@ export function TaskScheduler() {
     eventToDelete: null as any,
   });
   const { currentLanguage } = useLanguage();
+  const { businessHours } = useBusinessHours();
   const calendarRef = React.useRef<any>(null);
 
   useEffect(() => {
@@ -140,9 +142,9 @@ export function TaskScheduler() {
           slotMinTime="06:00:00"
           slotMaxTime="19:00:00"
           businessHours={{
-            daysOfWeek: [1, 2, 3, 4, 5], // Monday - Thursday
-            startTime: '07:00', // a start time (10am in this example)
-            endTime: '16:00',
+            daysOfWeek: businessHours.workDays,
+            startTime: businessHours.startTime,
+            endTime: businessHours.endTime,
           }}
           nowIndicator
           initialView="timeGridWeek"

@@ -1038,6 +1038,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^7.15.2":
+  version: 7.15.2
+  resolution: "@mantine/dates@npm:7.15.2"
+  dependencies:
+    clsx: "npm:^2.1.1"
+  peerDependencies:
+    "@mantine/core": 7.15.2
+    "@mantine/hooks": 7.15.2
+    dayjs: ">=1.0.0"
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+  checksum: 10c0/8bb0d56a87fa82c66e624b2148dd0310744230c9f3c275ed980b89aeadd33770727bbe55685c74f5ca0e98e842db445f89a9b1369d78d6e5762dc73a5d95c7c5
+  languageName: node
+  linkType: hard
+
 "@mantine/hooks@npm:7.15.2":
   version: 7.15.2
   resolution: "@mantine/hooks@npm:7.15.2"
@@ -5194,6 +5209,7 @@ __metadata:
     "@fullcalendar/timegrid": "npm:^6.1.15"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.4.0"
     "@mantine/core": "npm:7.15.2"
+    "@mantine/dates": "npm:^7.15.2"
     "@mantine/hooks": "npm:7.15.2"
     "@storybook/react": "npm:^8.4.5"
     "@storybook/react-vite": "npm:^8.4.5"

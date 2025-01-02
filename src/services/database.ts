@@ -15,6 +15,22 @@ export async function initDatabase() {
         done BOOLEAN DEFAULT FALSE
       )
     `);
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+    `);
+
+    // Initialize default business hours if not exist
+    const defaultBusinessHours = {
+      startTime: '07:00',
+      endTime: '16:00',
+      workDays: [1, 2, 3, 4, 5],
+    };
+    await db.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('businessHours', $1)", [
+      JSON.stringify(defaultBusinessHours),
+    ]);
   }
   return db;
 }
@@ -55,4 +71,23 @@ export async function deleteEvent(id: string) {
 export async function updateEventDoneStatus(id: string, done: boolean) {
   const db = await initDatabase();
   await db.execute('UPDATE events SET done = $1 WHERE id = $2', [done, id]);
+}
+
+export async function getBusinessHours() {
+  const db = await initDatabase();
+  const result = await db.select<[{ value: string }]>(
+    "SELECT value FROM settings WHERE key = 'businessHours'"
+  );
+  return JSON.parse(result[0].value);
+}
+
+export async function updateBusinessHours(businessHours: {
+  startTime: string;
+  endTime: string;
+  workDays: number[];
+}) {
+  const db = await initDatabase();
+  await db.execute("UPDATE settings SET value = $1 WHERE key = 'businessHours'", [
+    JSON.stringify(businessHours),
+  ]);
 }

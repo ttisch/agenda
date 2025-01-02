@@ -27,6 +27,7 @@
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
     "@mantine/core": "7.15.2",
+    "@mantine/dates": "^7.15.2",
     "@mantine/hooks": "7.15.2",
     "@tabler/icons-react": "^3.26.0",
     "@tauri-apps/api": "^2.1.1",
