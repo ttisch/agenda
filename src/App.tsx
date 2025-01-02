@@ -13,7 +13,7 @@ export default function App() {
     <LanguageProvider>
       <BusinessHoursProvider>
         <MantineProvider theme={theme} defaultColorScheme="light">
-          <AppShell header={{ height: 40 }}>
+          <AppShell header={{ height: 30 }}>
             <AppShell.Header>
               <Container>
                 <div
@@ -24,10 +24,11 @@ export default function App() {
                     component="span"
                     gradient={{ from: 'pink', to: 'yellow' }}
                   >
-                    Planner
+                    Agenda
                   </Text>
                   <ActionIcon
                     variant="filled"
+                    size="sm"
                     aria-label="Settings"
                     onClick={() => {
                       navigate('/settings');
