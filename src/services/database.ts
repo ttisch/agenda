@@ -44,7 +44,10 @@ export async function getEvents() {
 // get undone events before the given date
 export async function getUndoneEventsBefore(date: string) {
   const db = await initDatabase();
-  const result = await db.select('SELECT * FROM events WHERE done = FALSE AND start < $1', [date]);
+  const result = await db.select(
+    'SELECT * FROM events WHERE (done = "false" OR done = NULL) AND start < $1',
+    [date]
+  );
   return result;
 }
 

@@ -2,16 +2,20 @@ import { getBusinessHours, getEventsAfter, getUndoneEventsBefore } from './datab
 
 export async function reschedule() {
   // Get undone events before now
-  const undoneEvents = await getUndoneEventsBefore(new Date().toISOString());
+  const undoneEvents = (await getUndoneEventsBefore(new Date().toISOString())) as any[];
+  console.log('undoneEvents', undoneEvents);
 
   // Get future events
-  const futureEvents = await getEventsAfter(new Date().toISOString());
+  const futureEvents = (await getEventsAfter(new Date().toISOString())) as any[];
+  console.log('futureEvents', futureEvents);
 
   // Get business hours
   const businessHours = await getBusinessHours();
+  console.log('businessHours', businessHours);
 
   // Reschedule undone events to next free time slots
   const rescheduledEvents = rescheduleEvents(undoneEvents, futureEvents, businessHours);
+  console.log('rescheduledEvents', rescheduledEvents);
 
   return rescheduledEvents;
 }
