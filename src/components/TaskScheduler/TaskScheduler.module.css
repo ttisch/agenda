@@ -1,0 +1,17 @@
+.calendarContainer :global(.fc-prev-button),
+.calendarContainer :global(.fc-next-button),
+.calendarContainer :global(.fc-today-button),
+.calendarContainer :global(.fc-timeGridWeek-button),
+.calendarContainer :global(.fc-toolbar-title) {
+  padding: 4px 8px !important;
+  font-size: 0.8rem !important;
+}
+
+.calendarContainer :global(.fc-icon) {
+  font-size: 1.2rem !important;
+}
+
+.calendarContainer :global(.fc-toolbar.fc-header-toolbar) {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

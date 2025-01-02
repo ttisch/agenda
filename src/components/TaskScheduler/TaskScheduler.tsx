@@ -10,6 +10,7 @@ import { ActionIcon, Button, Group, Modal } from '@mantine/core';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
+import styles from './TaskScheduler.module.css';
 
 interface DatabaseEvent {
   id?: number;
@@ -129,35 +130,37 @@ export function TaskScheduler() {
   return (
     <div className="demo-app">
       <div className="demo-app-main">
-        <FullCalendar
-          ref={calendarRef}
-          locales={[deLocale, enLocale]}
-          locale={currentLanguage.code}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'timeGridWeek',
-          }}
-          slotMinTime="06:00:00"
-          slotMaxTime="19:00:00"
-          businessHours={{
-            daysOfWeek: businessHours.workDays,
-            startTime: businessHours.startTime,
-            endTime: businessHours.endTime,
-          }}
-          nowIndicator
-          initialView="timeGridWeek"
-          editable
-          selectable
-          selectMirror
-          dayMaxEvents
-          weekends={false}
-          select={handleDateSelect}
-          eventContent={(e) => renderEventContent(e, setDeleteModal)}
-          eventClick={undefined} // remove event click handler
-          eventsSet={handleEvents}
-        />
+        <div className={styles.calendarContainer}>
+          <FullCalendar
+            ref={calendarRef}
+            locales={[deLocale, enLocale]}
+            locale={currentLanguage.code}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'timeGridWeek',
+            }}
+            slotMinTime="06:00:00"
+            slotMaxTime="19:00:00"
+            businessHours={{
+              daysOfWeek: businessHours.workDays,
+              startTime: businessHours.startTime,
+              endTime: businessHours.endTime,
+            }}
+            nowIndicator
+            initialView="timeGridWeek"
+            editable
+            selectable
+            selectMirror
+            dayMaxEvents
+            weekends={false}
+            select={handleDateSelect}
+            eventContent={(e) => renderEventContent(e, setDeleteModal)}
+            eventClick={undefined} // remove event click handler
+            eventsSet={handleEvents}
+          />
+        </div>
         <DeleteConfirmationModal
           isOpen={deleteModal.isOpen}
           onClose={handleDeleteCancel}
