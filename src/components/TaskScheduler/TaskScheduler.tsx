@@ -137,6 +137,8 @@ export function TaskScheduler() {
             center: 'title',
             right: 'timeGridWeek',
           }}
+          slotMinTime="06:00:00"
+          slotMaxTime="19:00:00"
           businessHours={{
             daysOfWeek: [1, 2, 3, 4, 5], // Monday - Thursday
             startTime: '07:00', // a start time (10am in this example)
