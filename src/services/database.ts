@@ -26,7 +26,7 @@ export async function getEvents() {
 }
 
 export async function addEvent(event: {
-  id: number;
+  id?: number;
   title: string;
   start: string;
   end?: string;

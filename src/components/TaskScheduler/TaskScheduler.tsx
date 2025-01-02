@@ -5,12 +5,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Button, Group, Modal } from '@mantine/core';
+import { IconCheck, IconTrash } from '@tabler/icons-react';
+import { ActionIcon, Button, Group, Modal } from '@mantine/core';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
 
 interface DatabaseEvent {
-  id: number;
+  id?: number;
   title: string;
   start: string;
   end?: string;
@@ -102,13 +103,6 @@ export function TaskScheduler() {
     }
   }
 
-  function handleEventClick(clickInfo: any) {
-    setDeleteModal({
-      isOpen: true,
-      eventToDelete: clickInfo.event,
-    });
-  }
-
   async function handleDeleteConfirm() {
     const event = deleteModal.eventToDelete;
     if (event) {
@@ -156,8 +150,8 @@ export function TaskScheduler() {
           dayMaxEvents
           weekends={false}
           select={handleDateSelect}
-          eventContent={renderEventContent}
-          eventClick={handleEventClick}
+          eventContent={(e) => renderEventContent(e, setDeleteModal)}
+          eventClick={undefined} // remove event click handler
           eventsSet={handleEvents}
         />
         <DeleteConfirmationModal
@@ -171,18 +165,17 @@ export function TaskScheduler() {
   );
 }
 
-function renderEventContent(eventInfo: any) {
-  console.log(eventInfo);
-  console.log(eventInfo.event.extendedProps);
+function renderEventContent(eventInfo: any, setDeleteModal: any) {
   const isDone = eventInfo.event.extendedProps.done as boolean;
   return (
-    <>
+    <div style={{ gap: '4px' }}>
       <b>{eventInfo.timeText}&nbsp;</b>
-      <Button
-        size="compact-xs"
-        color="grey"
-        variant="default"
-        onClick={async () => {
+      <ActionIcon
+        size="xs"
+        color={isDone ? 'gray' : 'blue'}
+        variant="subtle"
+        onClick={async (e) => {
+          e.stopPropagation();
           const newDoneStatus = !isDone;
           eventInfo.event.setExtendedProp('done', newDoneStatus);
           eventInfo.event.setProp('backgroundColor', newDoneStatus ? '#d3d3d3' : 'blue');
@@ -194,9 +187,24 @@ function renderEventContent(eventInfo: any) {
           }
         }}
       >
-        Done
-      </Button>{' '}
+        <IconCheck size={14} />
+      </ActionIcon>
+      <ActionIcon
+        size="xs"
+        color="red"
+        variant="subtle"
+        onClick={(e) => {
+          e.stopPropagation();
+          setDeleteModal({
+            isOpen: true,
+            eventToDelete: eventInfo.event,
+          });
+        }}
+      >
+        <IconTrash size={14} />
+      </ActionIcon>
+      <br />
       <i>{eventInfo.event.title}</i>
-    </>
+    </div>
   );
 }
