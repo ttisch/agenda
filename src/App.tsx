@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { reschedule } from './services/events';
 import { theme } from './theme';
 
 export default function App() {
@@ -15,9 +16,8 @@ export default function App() {
   const handleClickReschedule = () => {
     console.log('Reschedule');
     setRescheduling(true);
-    setTimeout(() => {
-      setRescheduling(false);
-    }, 2000);
+    reschedule();
+    setRescheduling(false);
   };
 
   return (
