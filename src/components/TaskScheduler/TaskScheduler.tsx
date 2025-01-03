@@ -6,7 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Button, Group, Modal } from '@mantine/core';
+import { ActionIcon, Button, Group, Modal, Text, TextInput } from '@mantine/core';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
@@ -22,14 +22,88 @@ interface DatabaseEvent {
   done?: boolean | string;
 }
 
-interface DeleteModalProps {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  eventTitle: string;
+  eventTitle?: string;
 }
 
-function DeleteConfirmationModal({ isOpen, onClose, onConfirm, eventTitle }: DeleteModalProps) {
+interface CreateEventModalProps extends Omit<ModalProps, 'onConfirm'> {
+  onConfirm: (title: string) => void;
+  defaultTitle?: string;
+  startTime: string;
+  endTime: string;
+}
+
+function CreateEventModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  startTime,
+  endTime,
+}: CreateEventModalProps) {
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setTitle('');
+    }
+  }, [isOpen]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (title.trim()) {
+      onConfirm(title.trim());
+      onClose();
+    }
+  };
+
+  const formattedStart = new Date(startTime).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const formattedEnd = new Date(endTime).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const formattedDate = new Date(startTime).toLocaleDateString([], {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <Modal opened={isOpen} onClose={onClose} title="Create New Event" centered size="sm">
+      <form onSubmit={handleSubmit}>
+        <Text size="sm" mb="xs" c="dimmed">
+          {formattedDate}
+        </Text>
+        <Text size="sm" mb="md" c="dimmed">
+          {formattedStart} - {formattedEnd}
+        </Text>
+        <TextInput
+          data-autofocus
+          label="Event Title"
+          placeholder="Enter event title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          mb="md"
+        />
+        <Group justify="flex-end" mt="md">
+          <Button variant="light" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={!title.trim()}>
+            Create
+          </Button>
+        </Group>
+      </form>
+    </Modal>
+  );
+}
+
+function DeleteConfirmationModal({ isOpen, onClose, onConfirm, eventTitle = '' }: ModalProps) {
   return (
     <Modal opened={isOpen} onClose={onClose} title="Delete Event" centered>
       <p>Are you sure you want to delete the event '{eventTitle}'?</p>
@@ -50,6 +124,10 @@ export function TaskScheduler() {
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     eventToDelete: null as any,
+  });
+  const [createModal, setCreateModal] = useState({
+    isOpen: false,
+    selectInfo: null as any,
   });
   const { currentLanguage } = useLanguage();
   const { businessHours } = useBusinessHours();
@@ -110,27 +188,28 @@ export function TaskScheduler() {
   }
 
   async function handleDateSelect(selectInfo: any) {
-    const title = 'New Event';
     const calendarApi = selectInfo.view.calendar;
-
     calendarApi.unselect(); // clear date selection
+    setCreateModal({ isOpen: true, selectInfo });
+  }
 
-    if (title) {
+  async function handleCreateEvent(title: string) {
+    if (createModal.selectInfo) {
       const newEvent = {
-        // id: createEventId(),
         title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
+        start: createModal.selectInfo.startStr,
+        end: createModal.selectInfo.endStr,
+        allDay: createModal.selectInfo.allDay,
       };
 
       try {
         await addEvent(newEvent);
-        calendarApi.addEvent(newEvent);
+        createModal.selectInfo.view.calendar.addEvent(newEvent);
       } catch (error) {
         console.error('Failed to add event:', error);
       }
     }
+    setCreateModal({ isOpen: false, selectInfo: null });
   }
 
   async function handleDeleteConfirm() {
@@ -197,6 +276,13 @@ export function TaskScheduler() {
           onConfirm={handleDeleteConfirm}
           eventTitle={deleteModal.eventToDelete?.title || ''}
         />
+        <CreateEventModal
+          isOpen={createModal.isOpen}
+          onClose={() => setCreateModal({ isOpen: false, selectInfo: null })}
+          onConfirm={handleCreateEvent}
+          startTime={createModal.selectInfo?.startStr || ''}
+          endTime={createModal.selectInfo?.endStr || ''}
+        />
       </div>
     </div>
   );
@@ -234,8 +320,8 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
         <div style={{ display: 'flex', gap: '2px' }}>
           <ActionIcon
             size="xs"
-            color={isDone ? 'gray' : 'blue'}
-            variant="subtle"
+            color={isDone ? 'gray' : 'green'}
+            variant="outline"
             onClick={async (e) => {
               e.stopPropagation();
               const newDoneStatus = !isDone;
