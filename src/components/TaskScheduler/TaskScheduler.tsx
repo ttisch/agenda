@@ -7,6 +7,7 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Button, Group, Modal } from '@mantine/core';
+import { reschedule } from '@/services/events';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
@@ -53,6 +54,32 @@ export function TaskScheduler() {
   const { currentLanguage } = useLanguage();
   const { businessHours } = useBusinessHours();
   const calendarRef = React.useRef<any>(null);
+
+  const [rescheduling, setRescheduling] = useState(false);
+
+  const handleClickReschedule = async () => {
+    console.log('Reschedule');
+    setRescheduling(true);
+    const rescheduledEvents = await reschedule();
+    console.log('Rescheduled events:', rescheduledEvents);
+    setRescheduling(false);
+    // add rescheduled events to the calendar
+    const calendarApi = calendarRef.current?.getApi();
+    if (calendarApi) {
+      rescheduledEvents.forEach((event: any) => {
+        calendarApi.addEvent({
+          id: event.id,
+          title: event.title,
+          start: event.start,
+          end: event.end,
+          allDay: event.all_day && event?.all_day === 'true',
+          backgroundColor: event.done && event.done === 'true' ? '#d3d3d3' : 'blue',
+          borderColor: event.done && event.done === 'true' ? '#b0b0b0' : 'blue',
+          extendedProps: { done: event.done && event.done === 'true' },
+        });
+      });
+    }
+  };
 
   useEffect(() => {
     loadEvents();
@@ -131,6 +158,9 @@ export function TaskScheduler() {
     <div className="demo-app">
       <div className="demo-app-main">
         <div className={styles.calendarContainer}>
+          <Button onClick={handleClickReschedule} disabled={rescheduling}>
+            Reschedule
+          </Button>
           <FullCalendar
             ref={calendarRef}
             locales={[deLocale, enLocale]}
