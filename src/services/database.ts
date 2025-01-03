@@ -65,9 +65,9 @@ export async function addEvent(event: {
   end?: string;
   allDay?: boolean;
   done?: boolean;
-}) {
+}): Promise<any> {
   const db = await initDatabase();
-  await db.execute(
+  const result = await db.execute(
     'INSERT INTO events (title, start, end, all_day, done) VALUES ($1, $2, $3, $4, $5)',
     [
       // event.id,
@@ -78,6 +78,8 @@ export async function addEvent(event: {
       event.done || false,
     ]
   );
+  console.log('addEvent result', result);
+  return { ...event, id: result.lastInsertId };
 }
 
 export async function updateEvent(

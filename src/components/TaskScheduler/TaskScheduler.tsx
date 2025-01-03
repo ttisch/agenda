@@ -206,8 +206,8 @@ export function TaskScheduler() {
       };
 
       try {
-        await addEvent(newEvent);
-        eventModal.selectInfo.view.calendar.addEvent(newEvent);
+        const newlyAddedEvent = await addEvent(newEvent);
+        eventModal.selectInfo.view.calendar.addEvent({ ...newEvent, id: newlyAddedEvent.id });
       } catch (error) {
         console.error('Failed to add event:', error);
       }
