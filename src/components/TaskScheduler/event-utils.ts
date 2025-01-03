@@ -1,18 +1,23 @@
-let eventGuid = 0;
-let todayStr = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
+import { reschedule } from '../../services/events';
 
-export const INITIAL_EVENTS = [
-  {
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr,
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00',
-  },
-];
+let eventGuid = 0;
+
+// Schedule daily rescheduling at midnight
+export function scheduleDailyReschedule() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+
+  // Schedule first run at next midnight
+  setTimeout(() => {
+    reschedule();
+    // Then schedule it to run every 24 hours
+    setInterval(reschedule, 24 * 60 * 60 * 1000);
+  }, timeUntilMidnight);
+}
 
 export function createEventId() {
   return String(eventGuid++);
