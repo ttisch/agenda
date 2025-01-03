@@ -9,7 +9,13 @@ import { IconCheck, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Button, Group, Modal, Text, TextInput } from '@mantine/core';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
+import {
+  addEvent,
+  deleteEvent,
+  getEvents,
+  updateEvent,
+  updateEventDoneStatus,
+} from '../../services/database';
 import { reschedule } from '../../services/events';
 import styles from './TaskScheduler.module.css';
 
@@ -29,27 +35,30 @@ interface ModalProps {
   eventTitle?: string;
 }
 
-interface CreateEventModalProps extends Omit<ModalProps, 'onConfirm'> {
+interface EventModalProps extends Omit<ModalProps, 'onConfirm'> {
   onConfirm: (title: string) => void;
   defaultTitle?: string;
   startTime: string;
   endTime: string;
+  mode: 'create' | 'edit';
 }
 
-function CreateEventModal({
+function EventModal({
   isOpen,
   onClose,
   onConfirm,
   startTime,
   endTime,
-}: CreateEventModalProps) {
-  const [title, setTitle] = useState('');
+  defaultTitle = '',
+  mode,
+}: EventModalProps) {
+  const [title, setTitle] = useState(defaultTitle);
 
   useEffect(() => {
     if (isOpen) {
-      setTitle('');
+      setTitle(defaultTitle);
     }
-  }, [isOpen]);
+  }, [isOpen, defaultTitle]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +83,13 @@ function CreateEventModal({
   });
 
   return (
-    <Modal opened={isOpen} onClose={onClose} title="Create New Event" centered size="sm">
+    <Modal
+      opened={isOpen}
+      onClose={onClose}
+      title={mode === 'create' ? 'Create New Event' : 'Edit Event'}
+      centered
+      size="sm"
+    >
       <form onSubmit={handleSubmit}>
         <Text size="sm" mb="xs" c="dimmed">
           {formattedDate}
@@ -95,7 +110,7 @@ function CreateEventModal({
             Cancel
           </Button>
           <Button type="submit" disabled={!title.trim()}>
-            Create
+            {mode === 'create' ? 'Create' : 'Save'}
           </Button>
         </Group>
       </form>
@@ -125,9 +140,11 @@ export function TaskScheduler() {
     isOpen: false,
     eventToDelete: null as any,
   });
-  const [createModal, setCreateModal] = useState({
+  const [eventModal, setEventModal] = useState({
     isOpen: false,
     selectInfo: null as any,
+    mode: 'create' as 'create' | 'edit',
+    eventToEdit: null as any,
   });
   const { currentLanguage } = useLanguage();
   const { businessHours } = useBusinessHours();
@@ -193,26 +210,40 @@ export function TaskScheduler() {
   async function handleDateSelect(selectInfo: any) {
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // clear date selection
-    setCreateModal({ isOpen: true, selectInfo });
+    setEventModal({ isOpen: true, selectInfo, mode: 'create', eventToEdit: null });
   }
 
-  async function handleCreateEvent(title: string) {
-    if (createModal.selectInfo) {
+  async function handleEventModalConfirm(title: string) {
+    if (eventModal.mode === 'create' && eventModal.selectInfo) {
       const newEvent = {
         title,
-        start: createModal.selectInfo.startStr,
-        end: createModal.selectInfo.endStr,
-        allDay: createModal.selectInfo.allDay,
+        start: eventModal.selectInfo.startStr,
+        end: eventModal.selectInfo.endStr,
+        allDay: eventModal.selectInfo.allDay,
       };
 
       try {
         await addEvent(newEvent);
-        createModal.selectInfo.view.calendar.addEvent(newEvent);
+        eventModal.selectInfo.view.calendar.addEvent(newEvent);
       } catch (error) {
         console.error('Failed to add event:', error);
       }
+    } else if (eventModal.mode === 'edit' && eventModal.eventToEdit) {
+      const event = eventModal.eventToEdit;
+      try {
+        await updateEvent(event.id, {
+          title,
+          start: event.startStr,
+          end: event.endStr,
+          allDay: event.allDay,
+          done: event.extendedProps.done,
+        });
+        event.setProp('title', title);
+      } catch (error) {
+        console.error('Failed to update event:', error);
+      }
     }
-    setCreateModal({ isOpen: false, selectInfo: null });
+    setEventModal({ isOpen: false, selectInfo: null, mode: 'create', eventToEdit: null });
   }
 
   async function handleDeleteConfirm() {
@@ -269,7 +300,14 @@ export function TaskScheduler() {
             weekends={false}
             select={handleDateSelect}
             eventContent={(e) => renderEventContent(e, setDeleteModal)}
-            eventClick={undefined}
+            eventClick={(clickInfo) => {
+              setEventModal({
+                isOpen: true,
+                selectInfo: null,
+                mode: 'edit',
+                eventToEdit: clickInfo.event,
+              });
+            }}
             eventsSet={handleEvents}
             rerenderDelay={0}
             scrollTimeReset={false}
@@ -281,12 +319,16 @@ export function TaskScheduler() {
           onConfirm={handleDeleteConfirm}
           eventTitle={deleteModal.eventToDelete?.title || ''}
         />
-        <CreateEventModal
-          isOpen={createModal.isOpen}
-          onClose={() => setCreateModal({ isOpen: false, selectInfo: null })}
-          onConfirm={handleCreateEvent}
-          startTime={createModal.selectInfo?.startStr || ''}
-          endTime={createModal.selectInfo?.endStr || ''}
+        <EventModal
+          isOpen={eventModal.isOpen}
+          onClose={() =>
+            setEventModal({ isOpen: false, selectInfo: null, mode: 'create', eventToEdit: null })
+          }
+          onConfirm={handleEventModalConfirm}
+          startTime={eventModal.selectInfo?.startStr || eventModal.eventToEdit?.startStr || ''}
+          endTime={eventModal.selectInfo?.endStr || eventModal.eventToEdit?.endStr || ''}
+          defaultTitle={eventModal.eventToEdit?.title || ''}
+          mode={eventModal.mode}
         />
       </div>
     </div>
