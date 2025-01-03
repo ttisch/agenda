@@ -160,23 +160,6 @@ export function TaskScheduler() {
     setRescheduling(false);
     // reload events
     loadEvents();
-
-    // // add rescheduled events to the calendar
-    // const calendarApi = calendarRef.current?.getApi();
-    // if (calendarApi) {
-    //   rescheduledEvents.forEach((event: any) => {
-    //     calendarApi.addEvent({
-    //       id: event.id,
-    //       title: event.title,
-    //       start: event.start,
-    //       end: event.end,
-    //       allDay: event.all_day && event?.all_day === 'true',
-    //       backgroundColor: event.done && event.done === 'true' ? '#e9ecef' : '#228be6',
-    //       borderColor: event.done && event.done === 'true' ? '#dee2e6' : '#1c7ed6',
-    //       extendedProps: { done: event.done && event.done === 'true' },
-    //     });
-    //   });
-    // }
   };
 
   useEffect(() => {
