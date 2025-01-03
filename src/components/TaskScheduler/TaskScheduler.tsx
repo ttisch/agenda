@@ -269,8 +269,10 @@ export function TaskScheduler() {
             weekends={false}
             select={handleDateSelect}
             eventContent={(e) => renderEventContent(e, setDeleteModal)}
-            eventClick={undefined} // remove event click handler
+            eventClick={undefined}
             eventsSet={handleEvents}
+            rerenderDelay={0}
+            scrollTimeReset={false}
           />
         </div>
         <DeleteConfirmationModal
@@ -327,12 +329,15 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
             variant="outline"
             onClick={async (e) => {
               e.stopPropagation();
+
+              const event = eventInfo.event;
               const newDoneStatus = !isDone;
-              eventInfo.event.setExtendedProp('done', newDoneStatus);
-              eventInfo.event.setProp('backgroundColor', newDoneStatus ? '#e9ecef' : '#228be6');
-              eventInfo.event.setProp('borderColor', newDoneStatus ? '#dee2e6' : '#1c7ed6');
+
               try {
-                await updateEventDoneStatus(eventInfo.event.id, newDoneStatus);
+                await updateEventDoneStatus(event.id, newDoneStatus);
+                event.setExtendedProp('done', newDoneStatus);
+                event.setProp('backgroundColor', newDoneStatus ? '#e9ecef' : '#228be6');
+                event.setProp('borderColor', newDoneStatus ? '#dee2e6' : '#1c7ed6');
               } catch (error) {
                 console.error('Failed to update event done status:', error);
               }
