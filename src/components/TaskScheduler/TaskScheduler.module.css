@@ -1,5 +1,5 @@
 .calendarContainer {
-  padding: 1rem;
+  padding: 0.25rem;
   background: var(--mantine-color-body);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -7,17 +7,17 @@
 
 /* Toolbar styling */
 .calendarContainer :global(.fc-toolbar.fc-header-toolbar) {
-  margin: 0.5rem 0 1.5rem 0;
-  padding: 0.5rem;
+  margin: 0.15rem 0 0.5rem 0;
+  padding: 0.15rem;
 }
 
 .calendarContainer :global(.fc-prev-button),
 .calendarContainer :global(.fc-next-button),
 .calendarContainer :global(.fc-today-button),
 .calendarContainer :global(.fc-timeGridWeek-button) {
-  padding: 6px 12px !important;
-  font-size: 0.9rem !important;
-  border-radius: 6px !important;
+  padding: 2px 6px !important;
+  font-size: 0.8rem !important;
+  border-radius: 4px !important;
   background: var(--mantine-color-blue-6) !important;
   border: none !important;
   transition: background-color 0.2s !important;
@@ -28,36 +28,36 @@
 }
 
 .calendarContainer :global(.fc-toolbar-title) {
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
   font-weight: 600 !important;
   color: var(--mantine-color-dark-8);
 }
 
 .calendarContainer :global(.fc-icon) {
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
 }
 
 /* Time grid styling */
 .calendarContainer :global(.fc-timegrid-slot) {
-  height: 3rem !important;
+  height: 1.75rem !important;
 }
 
 .calendarContainer :global(.fc-timegrid-slot-label) {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--mantine-color-gray-6);
 }
 
 .calendarContainer :global(.fc-col-header-cell) {
-  padding: 8px 0 !important;
+  padding: 2px 0 !important;
   background: var(--mantine-color-blue-0);
   font-weight: 600;
 }
 
 /* Event styling */
 .calendarContainer :global(.fc-event) {
-  border-radius: 4px !important;
+  border-radius: 3px !important;
   border: none !important;
-  padding: 2px !important;
+  padding: 1px !important;
   transition: transform 0.1s ease-in-out;
 }
 
@@ -66,7 +66,7 @@
 }
 
 .calendarContainer :global(.fc-event-main) {
-  padding: 4px 6px !important;
+  padding: 1px 2px !important;
 }
 
 /* Current time indicator */

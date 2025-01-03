@@ -7,10 +7,10 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Button, Group, Modal } from '@mantine/core';
-import { reschedule } from '@/services/events';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { addEvent, deleteEvent, getEvents, updateEventDoneStatus } from '../../services/database';
+import { reschedule } from '../../services/events';
 import styles from './TaskScheduler.module.css';
 
 interface DatabaseEvent {
@@ -209,9 +209,9 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '4px',
+        gap: '1px',
         height: '100%',
-        padding: '2px',
+        padding: '0px',
       }}
     >
       <div
@@ -219,19 +219,19 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '4px',
+          gap: '1px',
         }}
       >
         <span
           style={{
-            fontSize: '0.85rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
           }}
         >
           {eventInfo.timeText}
         </span>
-        <div style={{ display: 'flex', gap: '4px' }}>
+        <div style={{ display: 'flex', gap: '2px' }}>
           <ActionIcon
             size="xs"
             color={isDone ? 'gray' : 'blue'}
@@ -249,7 +249,7 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
               }
             }}
           >
-            <IconCheck size={14} />
+            <IconCheck size={12} />
           </ActionIcon>
           <ActionIcon
             size="xs"
@@ -263,14 +263,14 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
               });
             }}
           >
-            <IconTrash size={14} />
+            <IconTrash size={12} />
           </ActionIcon>
         </div>
       </div>
       <div
         style={{
-          fontSize: '0.9rem',
-          fontWeight: 500,
+          fontSize: '0.75rem',
+          fontWeight: 400,
           color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
