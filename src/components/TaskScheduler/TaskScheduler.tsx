@@ -291,6 +291,34 @@ export function TaskScheduler() {
                 eventToEdit: clickInfo.event,
               });
             }}
+            eventDrop={async (dropInfo) => {
+              try {
+                await updateEvent(dropInfo.event.id, {
+                  title: dropInfo.event.title,
+                  start: dropInfo.event.startStr,
+                  end: dropInfo.event.endStr,
+                  allDay: dropInfo.event.allDay,
+                  done: dropInfo.event.extendedProps.done,
+                });
+              } catch (error) {
+                console.error('Failed to update event after drag:', error);
+                dropInfo.revert();
+              }
+            }}
+            eventResize={async (resizeInfo) => {
+              try {
+                await updateEvent(resizeInfo.event.id, {
+                  title: resizeInfo.event.title,
+                  start: resizeInfo.event.startStr,
+                  end: resizeInfo.event.endStr,
+                  allDay: resizeInfo.event.allDay,
+                  done: resizeInfo.event.extendedProps.done,
+                });
+              } catch (error) {
+                console.error('Failed to update event after resize:', error);
+                resizeInfo.revert();
+              }
+            }}
             eventsSet={handleEvents}
             rerenderDelay={0}
             scrollTimeReset={false}
