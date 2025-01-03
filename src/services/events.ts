@@ -1,4 +1,10 @@
-import { getBusinessHours, getEventsAfter, getUndoneEventsBefore } from './database';
+import {
+  addEvent,
+  getBusinessHours,
+  getEventsAfter,
+  getUndoneEventsBefore,
+  updateEvent,
+} from './database';
 
 export async function reschedule() {
   // Get undone events before now
@@ -16,6 +22,16 @@ export async function reschedule() {
   // Reschedule undone events to next free time slots
   const rescheduledEvents = rescheduleEvents(undoneEvents, futureEvents, businessHours);
   console.log('rescheduledEvents', rescheduledEvents);
+
+  // add rescheduled events to database
+  for (const event of rescheduledEvents) {
+    await addEvent({ ...event, done: false });
+  }
+
+  // set undone events to rescheduled
+  for (const event of undoneEvents) {
+    await updateEvent(event.id, { ...event, done: true });
+  }
 
   return rescheduledEvents;
 }

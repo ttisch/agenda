@@ -59,7 +59,7 @@ export async function getEventsAfter(date: string) {
 }
 
 export async function addEvent(event: {
-  id?: number;
+  // id?: number;
   title: string;
   start: string;
   end?: string;
@@ -68,15 +68,32 @@ export async function addEvent(event: {
 }) {
   const db = await initDatabase();
   await db.execute(
-    'INSERT INTO events (id, title, start, end, all_day, done) VALUES ($1, $2, $3, $4, $5, $6)',
+    'INSERT INTO events (title, start, end, all_day, done) VALUES ($1, $2, $3, $4, $5)',
     [
-      event.id,
+      // event.id,
       event.title,
       event.start,
       event.end || null,
       event.allDay || false,
       event.done || false,
     ]
+  );
+}
+
+export async function updateEvent(
+  id: string,
+  event: {
+    title: string;
+    start: string;
+    end?: string;
+    allDay?: boolean;
+    done?: boolean;
+  }
+) {
+  const db = await initDatabase();
+  await db.execute(
+    'UPDATE events SET title = $1, start = $2, end = $3, all_day = $4, done = $5 WHERE id = $6',
+    [event.title, event.start, event.end || null, event.allDay || false, event.done || false, id]
   );
 }
 
