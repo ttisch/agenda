@@ -73,8 +73,8 @@ export function TaskScheduler() {
           start: event.start,
           end: event.end,
           allDay: event.all_day && event?.all_day === 'true',
-          backgroundColor: event.done && event.done === 'true' ? '#d3d3d3' : 'blue',
-          borderColor: event.done && event.done === 'true' ? '#b0b0b0' : 'blue',
+          backgroundColor: event.done && event.done === 'true' ? '#e9ecef' : '#228be6',
+          borderColor: event.done && event.done === 'true' ? '#dee2e6' : '#1c7ed6',
           extendedProps: { done: event.done && event.done === 'true' },
         });
       });
@@ -98,8 +98,8 @@ export function TaskScheduler() {
             start: event.start,
             end: event.end,
             allDay: event.all_day && event?.all_day === 'true',
-            backgroundColor: event.done && event.done === 'true' ? '#d3d3d3' : 'blue',
-            borderColor: event.done && event.done === 'true' ? '#b0b0b0' : 'blue',
+            backgroundColor: event.done && event.done === 'true' ? '#e9ecef' : '#228be6',
+            borderColor: event.done && event.done === 'true' ? '#dee2e6' : '#1c7ed6',
             extendedProps: { done: event.done && event.done === 'true' },
           });
         });
@@ -205,43 +205,80 @@ export function TaskScheduler() {
 function renderEventContent(eventInfo: any, setDeleteModal: any) {
   const isDone = eventInfo.event.extendedProps.done as boolean;
   return (
-    <div style={{ gap: '4px' }}>
-      <b>{eventInfo.timeText}&nbsp;</b>
-      <ActionIcon
-        size="xs"
-        color={isDone ? 'gray' : 'blue'}
-        variant="subtle"
-        onClick={async (e) => {
-          e.stopPropagation();
-          const newDoneStatus = !isDone;
-          eventInfo.event.setExtendedProp('done', newDoneStatus);
-          eventInfo.event.setProp('backgroundColor', newDoneStatus ? '#d3d3d3' : 'blue');
-          eventInfo.event.setProp('borderColor', newDoneStatus ? '#b0b0b0' : 'blue');
-          try {
-            await updateEventDoneStatus(eventInfo.event.id, newDoneStatus);
-          } catch (error) {
-            console.error('Failed to update event done status:', error);
-          }
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px',
+        height: '100%',
+        padding: '2px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '4px',
         }}
       >
-        <IconCheck size={14} />
-      </ActionIcon>
-      <ActionIcon
-        size="xs"
-        color="red"
-        variant="subtle"
-        onClick={(e) => {
-          e.stopPropagation();
-          setDeleteModal({
-            isOpen: true,
-            eventToDelete: eventInfo.event,
-          });
+        <span
+          style={{
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
+          }}
+        >
+          {eventInfo.timeText}
+        </span>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <ActionIcon
+            size="xs"
+            color={isDone ? 'gray' : 'blue'}
+            variant="subtle"
+            onClick={async (e) => {
+              e.stopPropagation();
+              const newDoneStatus = !isDone;
+              eventInfo.event.setExtendedProp('done', newDoneStatus);
+              eventInfo.event.setProp('backgroundColor', newDoneStatus ? '#e9ecef' : '#228be6');
+              eventInfo.event.setProp('borderColor', newDoneStatus ? '#dee2e6' : '#1c7ed6');
+              try {
+                await updateEventDoneStatus(eventInfo.event.id, newDoneStatus);
+              } catch (error) {
+                console.error('Failed to update event done status:', error);
+              }
+            }}
+          >
+            <IconCheck size={14} />
+          </ActionIcon>
+          <ActionIcon
+            size="xs"
+            color="red"
+            variant="subtle"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteModal({
+                isOpen: true,
+                eventToDelete: eventInfo.event,
+              });
+            }}
+          >
+            <IconTrash size={14} />
+          </ActionIcon>
+        </div>
+      </div>
+      <div
+        style={{
+          fontSize: '0.9rem',
+          fontWeight: 500,
+          color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
       >
-        <IconTrash size={14} />
-      </ActionIcon>
-      <br />
-      <i>{eventInfo.event.title}</i>
+        {eventInfo.event.title}
+      </div>
     </div>
   );
 }

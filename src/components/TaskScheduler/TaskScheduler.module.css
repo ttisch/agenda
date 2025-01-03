@@ -1,17 +1,94 @@
+.calendarContainer {
+  padding: 1rem;
+  background: var(--mantine-color-body);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar styling */
+.calendarContainer :global(.fc-toolbar.fc-header-toolbar) {
+  margin: 0.5rem 0 1.5rem 0;
+  padding: 0.5rem;
+}
+
 .calendarContainer :global(.fc-prev-button),
 .calendarContainer :global(.fc-next-button),
 .calendarContainer :global(.fc-today-button),
-.calendarContainer :global(.fc-timeGridWeek-button),
+.calendarContainer :global(.fc-timeGridWeek-button) {
+  padding: 6px 12px !important;
+  font-size: 0.9rem !important;
+  border-radius: 6px !important;
+  background: var(--mantine-color-blue-6) !important;
+  border: none !important;
+  transition: background-color 0.2s !important;
+}
+
+.calendarContainer :global(.fc-button:hover) {
+  background: var(--mantine-color-blue-7) !important;
+}
+
 .calendarContainer :global(.fc-toolbar-title) {
-  padding: 4px 8px !important;
-  font-size: 0.8rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  color: var(--mantine-color-dark-8);
 }
 
 .calendarContainer :global(.fc-icon) {
   font-size: 1.2rem !important;
 }
 
-.calendarContainer :global(.fc-toolbar.fc-header-toolbar) {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+/* Time grid styling */
+.calendarContainer :global(.fc-timegrid-slot) {
+  height: 3rem !important;
+}
+
+.calendarContainer :global(.fc-timegrid-slot-label) {
+  font-size: 0.85rem;
+  color: var(--mantine-color-gray-6);
+}
+
+.calendarContainer :global(.fc-col-header-cell) {
+  padding: 8px 0 !important;
+  background: var(--mantine-color-blue-0);
+  font-weight: 600;
+}
+
+/* Event styling */
+.calendarContainer :global(.fc-event) {
+  border-radius: 4px !important;
+  border: none !important;
+  padding: 2px !important;
+  transition: transform 0.1s ease-in-out;
+}
+
+.calendarContainer :global(.fc-event:hover) {
+  transform: scale(1.01);
+}
+
+.calendarContainer :global(.fc-event-main) {
+  padding: 4px 6px !important;
+}
+
+/* Current time indicator */
+.calendarContainer :global(.fc-timegrid-now-indicator-line) {
+  border-color: var(--mantine-color-red-6) !important;
+}
+
+.calendarContainer :global(.fc-timegrid-now-indicator-arrow) {
+  border-color: var(--mantine-color-red-6) !important;
+}
+
+/* Business hours */
+.calendarContainer :global(.fc-businessHours) {
+  background: var(--mantine-color-blue-0) !important;
+  opacity: 0.3;
+}
+
+/* Grid lines */
+.calendarContainer :global(.fc-timegrid-col-frame) {
+  background: var(--mantine-color-white);
+}
+
+.calendarContainer :global(.fc td, .fc th) {
+  border-color: var(--mantine-color-gray-2) !important;
 }
