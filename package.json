@@ -2,7 +2,7 @@
   "name": "mantine-vite-template",
   "private": true,
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -21,6 +21,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@changesets/cli": "^2.27.11",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
