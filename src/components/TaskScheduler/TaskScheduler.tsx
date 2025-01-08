@@ -254,9 +254,9 @@ export function TaskScheduler() {
     <div className="demo-app">
       <div className="demo-app-main">
         <div className={styles.calendarContainer}>
-          <Button onClick={handleClickReschedule} disabled={rescheduling}>
+          {/* <Button onClick={handleClickReschedule} disabled={rescheduling}>
             Reschedule
-          </Button>
+          </Button> */}
           <FullCalendar
             ref={calendarRef}
             locales={[deLocale, enLocale]}
