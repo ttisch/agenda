@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { IconAdjustments } from '@tabler/icons-react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
+import * as pkg from '../package.json';
 import { scheduleDailyReschedule } from './components/TaskScheduler/event-utils';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -63,6 +64,18 @@ export default function App() {
                 <Outlet />
               </Container>
             </AppShell.Main>
+            <AppShell.Footer>
+              <Container>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Text size="xs" c="gray">
+                    © {new Date().getFullYear()} tisch.systems - MIT License
+                  </Text>
+                  <Text size="xs" c="gray">
+                    v{pkg.version}
+                  </Text>
+                </div>
+              </Container>
+            </AppShell.Footer>
           </AppShell>
         </MantineProvider>
       </BusinessHoursProvider>
