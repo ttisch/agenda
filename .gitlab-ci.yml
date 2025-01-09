@@ -23,7 +23,7 @@ windows-build:
   stage: build
   before_script:
     - apt-get update
-    - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
+    - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 nsis
     - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
     - apt-get install -y nodejs
     - npm install -g yarn
@@ -42,10 +42,10 @@ windows-build:
   script:
     # Build the application
     - yarn build
-    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu
+    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu -- --bundles nsis
 
   artifacts:
     paths:
-      - src-tauri/target/x86_64-pc-windows-gnu/release/bundle/msi/*.msi
+      - src-tauri/target/x86_64-pc-windows-gnu/release/bundle/nsis/*.exe
       - src-tauri/target/x86_64-pc-windows-gnu/release/*.exe
     expire_in: 1 week
