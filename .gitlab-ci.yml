@@ -1,5 +1,4 @@
-default:
-  image: mcr.microsoft.com/windows/servercore:ltsc2019
+image: ubuntu:22.04
 
 stages:
   - build
@@ -22,26 +21,22 @@ cache:
 windows-build:
   stage: build
   before_script:
-    # Install Build Tools
-    - curl -o vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
-    - .\vs_buildtools.exe --quiet --wait --norestart --nocache --installPath C:\BuildTools --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended
-    - refreshenv
+    # Update package lists
+    - apt-get update
 
-    # Install WebView2
-    - curl -o MicrosoftEdgeWebview2Setup.exe https://go.microsoft.com/fwlink/p/?LinkId=2124703
-    - .\MicrosoftEdgeWebview2Setup.exe /silent /install
+    # Install required packages
+    - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
 
     # Install Node.js and Yarn
-    - curl -o nodejs.msi https://nodejs.org/dist/v20.10.0/node-v20.10.0-x64.msi
-    - msiexec /i nodejs.msi /qn
-    - refreshenv
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    - apt-get install -y nodejs
     - npm install -g yarn
     - yarn install
 
-    # Install Rust toolchain
-    - curl -sSf -o rustup-init.exe https://win.rustup.rs
-    - ./rustup-init.exe -y --default-toolchain stable
-    - refreshenv
+    # Install Rust
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - source $HOME/.cargo/env
+    - rustup target add x86_64-pc-windows-gnu
 
     # Install Windows build dependencies
     - yarn add --dev @tauri-apps/cli
@@ -50,11 +45,10 @@ windows-build:
   script:
     # Build the application
     - yarn build
-    - $env:RUSTFLAGS="-C target-feature=+crt-static"
-    - yarn tauri build
+    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu
 
   artifacts:
     paths:
-      - src-tauri/target/release/bundle/msi/*.msi
-      - src-tauri/target/release/*.exe
+      - src-tauri/target/x86_64-pc-windows-gnu/release/bundle/msi/*.msi
+      - src-tauri/target/x86_64-pc-windows-gnu/release/*.exe
     expire_in: 1 week
