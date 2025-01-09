@@ -23,7 +23,7 @@ html {
   padding: 2px 6px !important;
   font-size: 0.8rem !important;
   border-radius: 4px !important;
-  background: var(--mantine-color-blue-6) !important;
+  background: var(--mantine-color-green-8) !important;
   border: none !important;
   transition: background-color 0.2s !important;
 }
