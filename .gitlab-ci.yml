@@ -21,8 +21,6 @@ cache:
 
 windows-build:
   stage: build
-  tags:
-    - windows
   before_script:
     # Install Build Tools
     - curl -o vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
