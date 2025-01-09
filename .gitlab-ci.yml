@@ -28,9 +28,14 @@ windows-build:
     - apt-get install -y nodejs
     - npm install -g yarn
     - yarn install
-    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    - export PATH="/root/.cargo/bin:$PATH"
-    - . $HOME/.cargo/env
+    # Install Rust with proper environment setup
+    - mkdir -p $CARGO_HOME
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup-init.sh
+    - sh rustup-init.sh -y --default-toolchain stable --profile minimal --no-modify-path
+    - ls -la $CARGO_HOME/bin || echo "Cargo bin directory not found"
+    - export PATH="$CARGO_HOME/bin:$PATH"
+    - cargo --version || echo "cargo not found"
+    - rustup --version || echo "rustup not found"
     - rustup target add x86_64-pc-windows-gnu
     - yarn add --dev @tauri-apps/cli @tauri-apps/api
 
