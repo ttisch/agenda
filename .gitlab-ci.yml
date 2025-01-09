@@ -9,6 +9,7 @@ variables:
   TAURI_PRIVATE_KEY: ${TAURI_PRIVATE_KEY}
   TAURI_KEY_PASSWORD: ${TAURI_KEY_PASSWORD}
   CARGO_TERM_COLOR: always
+  CARGO_PATH: '/root/.cargo/bin:$PATH'
 
 cache:
   paths:
@@ -21,26 +22,17 @@ cache:
 windows-build:
   stage: build
   before_script:
-    # Update package lists
     - apt-get update
-
-    # Install required packages
     - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
-
-    # Install Node.js and Yarn
     - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
     - apt-get install -y nodejs
     - npm install -g yarn
     - yarn install
-
-    # Install Rust
     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    # - source $HOME/.cargo/env
+    - export PATH="/root/.cargo/bin:$PATH"
+    - . $HOME/.cargo/env
     - rustup target add x86_64-pc-windows-gnu
-
-    # Install Windows build dependencies
-    - yarn add --dev @tauri-apps/cli
-    - yarn add --dev @tauri-apps/api
+    - yarn add --dev @tauri-apps/cli @tauri-apps/api
 
   script:
     # Build the application
