@@ -1,0 +1,62 @@
+default:
+  image: mcr.microsoft.com/windows/servercore:ltsc2019
+
+stages:
+  - build
+
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/.cargo
+  RUSTUP_HOME: $CI_PROJECT_DIR/.rustup
+  TAURI_PRIVATE_KEY: ${TAURI_PRIVATE_KEY}
+  TAURI_KEY_PASSWORD: ${TAURI_KEY_PASSWORD}
+  CARGO_TERM_COLOR: always
+
+cache:
+  paths:
+    - .cargo
+    - .rustup
+    - target/
+    - node_modules/
+    - src-tauri/target/
+
+windows-build:
+  stage: build
+  tags:
+    - windows
+  before_script:
+    # Install Build Tools
+    - curl -o vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
+    - .\vs_buildtools.exe --quiet --wait --norestart --nocache --installPath C:\BuildTools --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended
+    - refreshenv
+
+    # Install WebView2
+    - curl -o MicrosoftEdgeWebview2Setup.exe https://go.microsoft.com/fwlink/p/?LinkId=2124703
+    - .\MicrosoftEdgeWebview2Setup.exe /silent /install
+
+    # Install Node.js and Yarn
+    - curl -o nodejs.msi https://nodejs.org/dist/v20.10.0/node-v20.10.0-x64.msi
+    - msiexec /i nodejs.msi /qn
+    - refreshenv
+    - npm install -g yarn
+    - yarn install
+
+    # Install Rust toolchain
+    - curl -sSf -o rustup-init.exe https://win.rustup.rs
+    - ./rustup-init.exe -y --default-toolchain stable
+    - refreshenv
+
+    # Install Windows build dependencies
+    - yarn add --dev @tauri-apps/cli
+    - yarn add --dev @tauri-apps/api
+
+  script:
+    # Build the application
+    - yarn build
+    - $env:RUSTFLAGS="-C target-feature=+crt-static"
+    - yarn tauri build
+
+  artifacts:
+    paths:
+      - src-tauri/target/release/bundle/msi/*.msi
+      - src-tauri/target/release/*.exe
+    expire_in: 1 week
