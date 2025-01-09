@@ -42,7 +42,7 @@ windows-build:
   script:
     # Build the application
     - yarn build
-    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu -- --bundles nsis
+    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu
 
   artifacts:
     paths:
