@@ -1,4 +1,5 @@
 html {
+  /* prevent "window stretch" effect on scrolling */
   overscroll-behavior: none;
 }
 
@@ -98,5 +99,9 @@ html {
 }
 
 :global(.fc-scrollgrid-section.fc-scrollgrid-section-header * th) {
-  border: 0 !important;
+  /* border: 0 !important; */
+}
+
+:global(.fc-col-header-cell.fc-day) {
+  background-color: #edefee;
 }

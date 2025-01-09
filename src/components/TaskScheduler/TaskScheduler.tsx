@@ -179,7 +179,7 @@ export function TaskScheduler() {
             start: event.start,
             end: event.end,
             allDay: event.all_day && event?.all_day === 'true',
-            backgroundColor: event.done && event.done === 'true' ? '#e9ecef' : '#228be6',
+            backgroundColor: event.done && event.done === 'true' ? '#d0edda' : '#75d195',
             borderColor: event.done && event.done === 'true' ? '#dee2e6' : '#1c7ed6',
             extendedProps: { done: event.done && event.done === 'true' },
           });
@@ -390,7 +390,7 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
               try {
                 await updateEventDoneStatus(event.id, newDoneStatus);
                 event.setExtendedProp('done', newDoneStatus);
-                event.setProp('backgroundColor', newDoneStatus ? '#e9ecef' : '#228be6');
+                event.setProp('backgroundColor', newDoneStatus ? '#d0edda' : '#75d195');
                 event.setProp('borderColor', newDoneStatus ? '#dee2e6' : '#1c7ed6');
               } catch (error) {
                 console.error('Failed to update event done status:', error);
