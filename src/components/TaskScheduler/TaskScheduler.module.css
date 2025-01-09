@@ -1,3 +1,7 @@
+html {
+  overscroll-behavior: none;
+}
+
 .calendarContainer {
   padding: 0.25rem;
   background: var(--mantine-color-body);
@@ -91,4 +95,8 @@
 
 .calendarContainer :global(.fc td, .fc th) {
   border-color: var(--mantine-color-gray-2) !important;
+}
+
+:global(.fc-scrollgrid-section.fc-scrollgrid-section-header * th) {
+  border: 0 !important;
 }

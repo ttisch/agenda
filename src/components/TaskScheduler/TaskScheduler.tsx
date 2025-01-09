@@ -275,6 +275,7 @@ export function TaskScheduler() {
               endTime: businessHours.endTime,
             }}
             nowIndicator
+            allDaySlot={false}
             initialView="timeGridWeek"
             editable
             selectable
