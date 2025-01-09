@@ -37,7 +37,7 @@ windows-build:
     - cargo --version || echo "cargo not found"
     - rustup --version || echo "rustup not found"
     - rustup target add x86_64-pc-windows-gnu
-    - yarn add --dev @tauri-apps/cli @tauri-apps/api
+    - yarn add --dev @tauri-apps/cli
 
   script:
     # Build the application
