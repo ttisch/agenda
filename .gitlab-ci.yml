@@ -24,6 +24,8 @@ windows-build:
   before_script:
     - apt-get update
     - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 nsis
+    # Download WebView2 Bootstrapper
+    - wget https://go.microsoft.com/fwlink/p/?LinkId=2124703 -O src-tauri/WebView2.exe
     - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
     - apt-get install -y nodejs
     - npm install -g yarn
@@ -42,7 +44,7 @@ windows-build:
   script:
     # Build the application
     - yarn build
-    - RUSTFLAGS="-C target-feature=+crt-static" yarn tauri build --target x86_64-pc-windows-gnu
+    - RUSTFLAGS="-C target-feature=+crt-static" WEBVIEW2_BOOTSTRAPPER_PATH="WebView2.exe" yarn tauri build --target x86_64-pc-windows-gnu
 
   artifacts:
     paths:
