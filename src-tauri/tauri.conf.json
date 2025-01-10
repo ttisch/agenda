@@ -23,7 +23,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -32,8 +32,6 @@
       "icons/icon.ico"
     ],
     "windows": {
-      "nsis": true,
-      "msi": false,
       "webviewInstallMode": {
         "silent": true,
         "type": "embedBootstrapper"
