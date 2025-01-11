@@ -48,13 +48,6 @@ export default function App() {
                   >
                     Agenda
                   </Text>
-                  <Button
-                    onClick={() => {
-                      navigate('/demo');
-                    }}
-                  >
-                    Demo
-                  </Button>
                   <ActionIcon
                     variant="filled"
                     size="sm"
