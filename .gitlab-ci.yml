@@ -23,7 +23,7 @@ windows-build:
   stage: build
   before_script:
     - apt-get update
-    - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 nsis
+    - apt-get install -y curl wget build-essential libwebkit2gtk-4.0-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev mingw-w64 gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 nsis lld llvm
     # Download WebView2 Bootstrapper
     - wget https://go.microsoft.com/fwlink/p/?LinkId=2124703 -O src-tauri/WebView2.exe
     - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
@@ -38,16 +38,16 @@ windows-build:
     - export PATH="$CARGO_HOME/bin:$PATH"
     - cargo --version || echo "cargo not found"
     - rustup --version || echo "rustup not found"
-    - rustup target add x86_64-pc-windows-gnu
+    - rustup target add x86_64-pc-windows-msvc
+    - cargo install --locked cargo-xwin
     - yarn add --dev @tauri-apps/cli
 
   script:
     # Build the application
     - yarn build
-    - RUSTFLAGS="-C target-feature=+crt-static" WEBVIEW2_BOOTSTRAPPER_PATH="WebView2.exe" yarn tauri build --target x86_64-pc-windows-gnu
+    - yarn tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
 
   artifacts:
     paths:
-      - src-tauri/target/x86_64-pc-windows-gnu/release/bundle/nsis/*.exe
-      - src-tauri/target/x86_64-pc-windows-gnu/release/*.exe
+      - src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
     expire_in: 1 week
