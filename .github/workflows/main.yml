@@ -14,13 +14,13 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin --bundle-type "dmg,app,updater"'
+            args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin --bundle-type "dmg,app,updater"'
+            args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
-            args: '--bundle-type "deb,appimage,updater"'
+            args: '' # Linux builds will use the targets from tauri.conf.json
           - platform: 'windows-latest'
-            args: '--bundle-type "msi,updater"'
+            args: '' # Windows builds will use the targets from tauri.conf.json
 
     runs-on: ${{ matrix.platform }}
     steps:
