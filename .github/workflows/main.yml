@@ -52,7 +52,7 @@ jobs:
           workspaces: src-tauri
 
       # Build step with latest tauri-action
-      - uses: tauri-apps/tauri-action@v0.4.6
+      - uses: tauri-apps/tauri-action@v0.5.18
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
