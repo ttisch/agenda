@@ -3,13 +3,15 @@ import '@mantine/core/styles.css';
 import { useState } from 'react';
 import { IconAdjustments } from '@tabler/icons-react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
+import { ActionIcon, AppShell, Button, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
 import { scheduleDailyReschedule } from './components/TaskScheduler/event-utils';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { reschedule } from './services/events';
 import { theme } from './theme';
+
+import './styles.css';
 
 export default function App() {
   const navigate = useNavigate();
@@ -46,6 +48,13 @@ export default function App() {
                   >
                     Agenda
                   </Text>
+                  <Button
+                    onClick={() => {
+                      navigate('/demo');
+                    }}
+                  >
+                    Demo
+                  </Button>
                   <ActionIcon
                     variant="filled"
                     size="sm"
