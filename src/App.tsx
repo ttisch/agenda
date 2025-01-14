@@ -1,9 +1,9 @@
 import '@mantine/core/styles.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconAdjustments } from '@tabler/icons-react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { ActionIcon, AppShell, Button, Container, MantineProvider, Text } from '@mantine/core';
+import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
 import { scheduleDailyReschedule } from './components/TaskScheduler/event-utils';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
@@ -16,13 +16,15 @@ import './styles.css';
 export default function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const _ = async () => {
-    // reschedule events on app start and daily at midnight
-    await scheduleDailyReschedule();
-    await reschedule();
-    setLoading(false);
-  };
-  _();
+  useEffect(() => {
+    const initializeApp = async () => {
+      // reschedule events on app start and daily at midnight
+      await scheduleDailyReschedule();
+      await reschedule();
+      setLoading(false);
+    };
+    initializeApp();
+  }, []);
 
   if (loading) {
     return <></>;
