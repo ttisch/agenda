@@ -1,5 +1,17 @@
 # mantine-vite-template
 
+## 0.0.4
+
+### Patch Changes
+
+- Add changelog page
+
+## 0.0.3
+
+### Patch Changes
+
+- Adjust styling
+
 ## 0.0.2
 
 ### Patch Changes
