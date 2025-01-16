@@ -5,7 +5,6 @@ import { IconAdjustments } from '@tabler/icons-react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
-import { scheduleDailyReschedule } from './components/TaskScheduler/event-utils';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { reschedule } from './services/events';
@@ -19,7 +18,7 @@ export default function App() {
   useEffect(() => {
     const initializeApp = async () => {
       // reschedule events on app start and daily at midnight
-      await scheduleDailyReschedule();
+      // await scheduleDailyReschedule();
       await reschedule();
       setLoading(false);
     };
