@@ -16,7 +16,6 @@ import {
   updateEvent,
   updateEventDoneStatus,
 } from '../../services/database';
-import { reschedule } from '../../services/events';
 import styles from './TaskScheduler.module.css';
 
 interface DatabaseEvent {
@@ -150,18 +149,6 @@ export function TaskScheduler() {
   const { businessHours } = useBusinessHours();
   const calendarRef = React.useRef<any>(null);
 
-  const [rescheduling, setRescheduling] = useState(false);
-
-  const handleClickReschedule = async () => {
-    console.log('Reschedule');
-    setRescheduling(true);
-    const rescheduledEvents = await reschedule();
-    console.log('Rescheduled events:', rescheduledEvents);
-    setRescheduling(false);
-    // reload events
-    loadEvents();
-  };
-
   useEffect(() => {
     loadEvents();
   }, []);
@@ -254,9 +241,6 @@ export function TaskScheduler() {
     <div className="demo-app">
       <div className="demo-app-main">
         <div className={styles.calendarContainer}>
-          {/* <Button onClick={handleClickReschedule} disabled={rescheduling}>
-            Reschedule
-          </Button> */}
           <FullCalendar
             ref={calendarRef}
             locales={[deLocale, enLocale]}
