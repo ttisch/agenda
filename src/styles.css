@@ -84,3 +84,9 @@ main::before {
 main.leaves::before {
   background-image: url('assets/leaves.jpg');
 }
+main.seascape::before {
+  background-image: url('assets/seascape.jpg');
+}
+main.orange::before {
+  background-image: url('assets/orange.png');
+}
