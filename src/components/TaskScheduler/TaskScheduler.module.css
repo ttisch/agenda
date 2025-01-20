@@ -122,12 +122,16 @@ html {
   border-right-width: 0 !important;
 }
 
+:global(.fc-scrollgrid-sync-inner) {
+  margin: 5px;
+}
+
 :global(.fc-col-header-cell.fc-day) {
   background-color: #edefee;
-  background: rgba(99, 112, 96, 0.46);
+  /* background: rgba(99, 112, 96, 0.46); */
   border-radius: 8px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(72, 199, 40, 0.39);
+  /* border: 1px solid rgba(72, 199, 40, 0.39); */
 }
