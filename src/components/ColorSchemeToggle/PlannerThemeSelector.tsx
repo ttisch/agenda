@@ -1,19 +1,6 @@
+import { IconCheck } from '@tabler/icons-react';
 import { Badge, Button, Card, Container, Grid, Group, Image, Text } from '@mantine/core';
 import { usePlannerTheme } from '../../contexts/PlannerThemeContext';
-import leavesImage from './../../assets/leaves.jpg';
-
-const PlannerThemeThumbnails = {
-  // en: '🇬🇧',
-  // es: '🇪🇸',
-  // fr: '🇫🇷',
-  // de: '🇩🇪',
-  // it: '🇮🇹',
-  // pt: '🇵🇹',
-  // ru: '🇷🇺',
-  // zh: '🇨🇳',
-  // ja: '🇯🇵',
-  // ko: '🇰🇷',
-} as const;
 
 export function PlannerThemeSelector() {
   const { currentPlannerTheme, setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
@@ -30,7 +17,10 @@ export function PlannerThemeSelector() {
                 </Card.Section>
 
                 <Group justify="space-between" mt="md" mb="xs">
-                  <Text fw={500}>{plannerTheme.name}</Text>
+                  <Text fw={500}>
+                    {plannerTheme.name}&nbsp;
+                    {currentPlannerTheme.code === plannerTheme.code && <IconCheck />}
+                  </Text>
                   {/* <Badge color="pink">On Sale</Badge> */}
                 </Group>
 
@@ -38,7 +28,14 @@ export function PlannerThemeSelector() {
                   {plannerTheme.description}
                 </Text>
 
-                <Button size="xs" color={plannerTheme.primaryColor} fullWidth mt="md" radius="md">
+                <Button
+                  size="xs"
+                  color={plannerTheme.primaryColor}
+                  fullWidth
+                  mt="md"
+                  radius="md"
+                  onClick={() => setPlannerTheme(plannerTheme)}
+                >
                   Select
                 </Button>
               </Card>
