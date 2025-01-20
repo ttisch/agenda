@@ -1,0 +1,80 @@
+name: 'publish'
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest'
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            args: '' # Linux builds will use the targets from tauri.conf.json
+          - platform: 'windows-latest'
+            args: '' # Windows builds will use the targets from tauri.conf.json
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'yarn' # Add caching for faster builds
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: yarn install
+
+      # Optional: Add Rust caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      # Build step with latest tauri-action
+      - uses: tauri-apps/tauri-action@v0.5.18
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v__VERSION__
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+      # Debug step to list artifacts
+      - name: List artifacts directory (macOS)
+        if: matrix.platform == 'macos-latest'
+        run: |
+          echo "Listing aarch64 artifacts:"
+          ls -R src-tauri/target/aarch64-apple-darwin/release/bundle/ || true
+          echo "Listing x86_64 artifacts:"
+          ls -R src-tauri/target/x86_64-apple-darwin/release/bundle/ || true
+
+      # Debug step for other platforms
+      - name: List artifacts directory (Other)
+        if: matrix.platform != 'macos-latest'
+        run: |
+          echo "Listing release artifacts:"
+          ls -R src-tauri/target/release/bundle/ || true
