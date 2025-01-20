@@ -62,7 +62,7 @@ export default function App() {
                 </div>
               </Container>
             </AppShell.Header>
-            <AppShell.Main>
+            <AppShell.Main className="leaves">
               <Container>
                 <Outlet />
               </Container>
