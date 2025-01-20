@@ -12,6 +12,8 @@ import { theme } from './theme';
 
 import './styles.css';
 
+import { PlannerThemeProvider } from './contexts/PlannerThemeContext';
+
 export default function App() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -30,58 +32,60 @@ export default function App() {
   }
   return (
     <LanguageProvider>
-      <BusinessHoursProvider>
-        <MantineProvider theme={theme} defaultColorScheme="light">
-          <AppShell header={{ height: 30 }}>
-            <AppShell.Header>
-              <Container>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text
-                    variant="gradient"
-                    component="span"
-                    gradient={{ from: 'pink', to: 'yellow' }}
-                  >
-                    Agenda
-                  </Text>
-                  <ActionIcon
-                    variant="filled"
-                    size="sm"
-                    aria-label="Settings"
-                    onClick={() => {
-                      navigate('/settings');
+      <PlannerThemeProvider>
+        <BusinessHoursProvider>
+          <MantineProvider theme={theme} defaultColorScheme="light">
+            <AppShell header={{ height: 30 }}>
+              <AppShell.Header>
+                <Container>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                   >
-                    <IconAdjustments style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                  </ActionIcon>
-                </div>
-              </Container>
-            </AppShell.Header>
-            <AppShell.Main className="leaves">
-              <Container>
-                <Outlet />
-              </Container>
-            </AppShell.Main>
-            <AppShell.Footer>
-              <Container>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Text size="xs" c="gray">
-                    © {new Date().getFullYear()} tisch.systems - MIT License
-                  </Text>
-                  <Text size="xs" c="gray">
-                    v{pkg.version}
-                  </Text>
-                </div>
-              </Container>
-            </AppShell.Footer>
-          </AppShell>
-        </MantineProvider>
-      </BusinessHoursProvider>
+                    <Text
+                      variant="gradient"
+                      component="span"
+                      gradient={{ from: 'pink', to: 'yellow' }}
+                    >
+                      Agenda
+                    </Text>
+                    <ActionIcon
+                      variant="filled"
+                      size="sm"
+                      aria-label="Settings"
+                      onClick={() => {
+                        navigate('/settings');
+                      }}
+                    >
+                      <IconAdjustments style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                    </ActionIcon>
+                  </div>
+                </Container>
+              </AppShell.Header>
+              <AppShell.Main className="leaves">
+                <Container>
+                  <Outlet />
+                </Container>
+              </AppShell.Main>
+              <AppShell.Footer>
+                <Container>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Text size="xs" c="gray">
+                      © {new Date().getFullYear()} tisch.systems - MIT License
+                    </Text>
+                    <Text size="xs" c="gray">
+                      v{pkg.version}
+                    </Text>
+                  </div>
+                </Container>
+              </AppShell.Footer>
+            </AppShell>
+          </MantineProvider>
+        </BusinessHoursProvider>
+      </PlannerThemeProvider>
     </LanguageProvider>
   );
 }

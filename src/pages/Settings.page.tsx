@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Grid, Group, Stack, Text, Title } from '@mantine/core';
+import { PlannerThemeSelector } from '@/components/ColorSchemeToggle/PlannerThemeSelector';
 import { BusinessHoursSelector } from '../components/BusinessHoursSelector/BusinessHoursSelector';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
+// import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import { LanguageSelector } from '../components/LanguageSelector/LanguageSelector';
 
 export function SettingsPage() {
@@ -23,7 +24,8 @@ export function SettingsPage() {
           <Text size="sm" fw={500} mb={8}>
             Theme
           </Text>
-          <ColorSchemeToggle />
+          {/* <ColorSchemeToggle /> */}
+          <PlannerThemeSelector />
         </div>
 
         <div>
