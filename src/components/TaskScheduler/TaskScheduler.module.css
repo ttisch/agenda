@@ -64,6 +64,14 @@ html {
   border: none !important;
   padding: 1px !important;
   transition: transform 0.1s ease-in-out;
+
+  /* background: rgba(72, 199, 40, 0.46) !important; */
+  /* background: var(--mantine-color-blue-0); */
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(2px);
+  /* border: 1px solid rgba(72, 199, 40, 0.39); */
 }
 
 .calendarContainer :global(.fc-event:hover) {
@@ -102,6 +110,24 @@ html {
   /* border: 0 !important; */
 }
 
+:global(.fc-scrollgrid-section.fc-scrollgrid-section-header * th) {
+  border-top-width: 0 !important;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important;
+}
+
+:global(.fc-scrollgrid) {
+  border-top-width: 0 !important;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important;
+}
+
 :global(.fc-col-header-cell.fc-day) {
   background-color: #edefee;
+  background: rgba(99, 112, 96, 0.46);
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(72, 199, 40, 0.39);
 }
