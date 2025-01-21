@@ -79,14 +79,14 @@ export default function App() {
   }
 
   return (
-    <LanguageProvider>
-      <PlannerThemeProvider>
-        <BusinessHoursProvider>
-          <MantineProvider theme={theme} defaultColorScheme="light">
+    <MantineProvider theme={theme} defaultColorScheme="light">
+      <LanguageProvider>
+        <PlannerThemeProvider>
+          <BusinessHoursProvider>
             <AppContent />
-          </MantineProvider>
-        </BusinessHoursProvider>
-      </PlannerThemeProvider>
-    </LanguageProvider>
+          </BusinessHoursProvider>
+        </PlannerThemeProvider>
+      </LanguageProvider>
+    </MantineProvider>
   );
 }

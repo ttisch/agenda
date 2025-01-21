@@ -84,9 +84,20 @@ main::before {
 main.leaves::before {
   background-image: url('assets/leaves.jpg');
 }
+main.leaves * .fc-button {
+  background: var(--mantine-color-green-7) !important;
+}
+
 main.seascape::before {
   background-image: url('assets/seascape.jpg');
 }
+main.seascape * .fc-button {
+  background: var(--mantine-color-blue-7) !important;
+}
+
 main.orange::before {
   background-image: url('assets/orange.jpg');
+}
+main.orange * .fc-button {
+  background: var(--mantine-color-orange-7) !important;
 }
