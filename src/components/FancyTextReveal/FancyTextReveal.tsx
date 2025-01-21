@@ -30,7 +30,7 @@ export default function Preview() {
       >
         ... INTO HEADLINES 📰
       </VerticalCutReveal>
-      <br />
+      {/* <br />
       <VerticalCutReveal
         splitBy="characters"
         staggerDuration={0.025}
@@ -43,7 +43,7 @@ export default function Preview() {
         }}
       >
         {`LET'S GO 😊`}
-      </VerticalCutReveal>
+      </VerticalCutReveal> */}
     </div>
   );
 }

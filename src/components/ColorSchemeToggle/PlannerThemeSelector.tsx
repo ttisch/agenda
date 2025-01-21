@@ -7,42 +7,42 @@ export function PlannerThemeSelector() {
 
   return (
     <>
-      <Container>
-        <Grid>
-          {availablePlannerThemes.map((plannerTheme) => (
-            <Grid.Col span={3}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Card.Section>
-                  <Image src={plannerTheme.thumbnail} height={160} alt="Chilling Green" />
-                </Card.Section>
+      {/* <Container> */}
+      <Grid>
+        {availablePlannerThemes.map((plannerTheme) => (
+          <Grid.Col span={3}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image src={plannerTheme.thumbnail} height={160} alt="Chilling Green" />
+              </Card.Section>
 
-                <Group justify="space-between" mt="md" mb="xs">
-                  <Text fw={500}>
-                    {plannerTheme.name}&nbsp;
-                    {currentPlannerTheme.code === plannerTheme.code && <IconCheck />}
-                  </Text>
-                  {/* <Badge color="pink">On Sale</Badge> */}
-                </Group>
-
-                <Text size="sm" c="dimmed">
-                  {plannerTheme.description}
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>
+                  {plannerTheme.name}&nbsp;
+                  {currentPlannerTheme.code === plannerTheme.code && <IconCheck />}
                 </Text>
+                {/* <Badge color="pink">On Sale</Badge> */}
+              </Group>
 
-                <Button
-                  size="xs"
-                  color={plannerTheme.primaryColor}
-                  fullWidth
-                  mt="md"
-                  radius="md"
-                  onClick={() => setPlannerTheme(plannerTheme)}
-                >
-                  Select
-                </Button>
-              </Card>
-            </Grid.Col>
-          ))}
-        </Grid>
-      </Container>
+              <Text size="sm" c="dimmed">
+                {plannerTheme.description}
+              </Text>
+
+              <Button
+                size="xs"
+                color={plannerTheme.primaryColor}
+                fullWidth
+                mt="md"
+                radius="md"
+                onClick={() => setPlannerTheme(plannerTheme)}
+              >
+                Select
+              </Button>
+            </Card>
+          </Grid.Col>
+        ))}
+      </Grid>
+      {/* </Container> */}
     </>
   );
 }
