@@ -101,6 +101,7 @@ export function PlannerThemeProvider({ children }: { children: ReactNode }) {
     setPlannerTheme: (plannerTheme: PlannerTheme) => {
       setCurrentPlannerTheme(plannerTheme);
       localStorage.setItem('planner-planner-theme', JSON.stringify(plannerTheme));
+      theme.primaryColor = plannerTheme.primaryColor;
     },
     availablePlannerThemes: plannerThemes,
   };

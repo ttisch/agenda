@@ -30,6 +30,6 @@ export const theme = createTheme({
   //     '#78716C',
   //   ],
   // },
-  // primaryColor: 'primary',
+  primaryColor: 'blue',
   // primaryShade: { light: 5, dark: 5 },
 });

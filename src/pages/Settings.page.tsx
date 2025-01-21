@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Grid, Group, Stack, Text, Title } from '@mantine/core';
 import { PlannerThemeSelector } from '@/components/ColorSchemeToggle/PlannerThemeSelector';
+import { usePlannerTheme } from '@/contexts/PlannerThemeContext';
 import { BusinessHoursSelector } from '../components/BusinessHoursSelector/BusinessHoursSelector';
 // import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import { LanguageSelector } from '../components/LanguageSelector/LanguageSelector';
 
 export function SettingsPage() {
   const navigate = useNavigate();
+  const { currentPlannerTheme } = usePlannerTheme();
 
   return (
     <Stack gap="md">
@@ -39,6 +41,9 @@ export function SettingsPage() {
       <Group>
         <Button
           variant="outline"
+          bg={currentPlannerTheme.primaryColor}
+          c="white"
+          b={currentPlannerTheme.primaryColor}
           onClick={() => {
             navigate('/demo');
           }}
