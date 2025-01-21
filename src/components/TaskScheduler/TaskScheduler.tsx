@@ -6,7 +6,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Button, Group, Modal, Text, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Group, Modal, Text, TextInput, useMantineTheme } from '@mantine/core';
+import { PlannerTheme, usePlannerTheme } from '@/contexts/PlannerThemeContext';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import {
@@ -17,6 +18,15 @@ import {
   updateEventDoneStatus,
 } from '../../services/database';
 import styles from './TaskScheduler.module.css';
+
+// const themeColors = {
+//   green: {
+//     background: 'rgba(72, 199, 40, 0.46)',
+//     borderColor: 'rgba(72, 199, 40, 0.39)',
+//   },
+//   orange: '#d0edda',
+//   blue: '#1c7ed6',
+// };
 
 interface DatabaseEvent {
   id?: number;
@@ -134,6 +144,8 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, eventTitle = '' }
 }
 
 export function TaskScheduler() {
+  const theme = useMantineTheme();
+  const { currentPlannerTheme, setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
   const [_currentEvents, setCurrentEvents] = useState<any[]>([]);
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
@@ -166,7 +178,10 @@ export function TaskScheduler() {
             start: event.start,
             end: event.end,
             allDay: event.all_day && event?.all_day === 'true',
-            backgroundColor: event.done && event.done === 'true' ? '#d0edda' : '#75d195',
+            backgroundColor:
+              event.done && event.done === 'true'
+                ? currentPlannerTheme.eventColorDone
+                : currentPlannerTheme.eventColor,
             borderColor: event.done && event.done === 'true' ? '#dee2e6' : '#1c7ed6',
             extendedProps: { done: event.done && event.done === 'true' },
           });
@@ -267,7 +282,7 @@ export function TaskScheduler() {
             dayMaxEvents
             weekends={false}
             select={handleDateSelect}
-            eventContent={(e) => renderEventContent(e, setDeleteModal)}
+            eventContent={(e) => renderEventContent(e, setDeleteModal, theme, currentPlannerTheme)}
             eventClick={(clickInfo) => {
               setEventModal({
                 isOpen: true,
@@ -331,7 +346,12 @@ export function TaskScheduler() {
   );
 }
 
-function renderEventContent(eventInfo: any, setDeleteModal: any) {
+function renderEventContent(
+  eventInfo: any,
+  setDeleteModal: any,
+  theme: any,
+  currentPlannerTheme: PlannerTheme
+) {
   const isDone = eventInfo.event.extendedProps.done as boolean;
   return (
     <div
@@ -372,9 +392,18 @@ function renderEventContent(eventInfo: any, setDeleteModal: any) {
               const newDoneStatus = !isDone;
 
               try {
+                /*
+                ? hexToRgba(theme.colors.green[3], 0.46)
+                : hexToRgba(theme.colors.green[7], 0.46),
+                */
                 await updateEventDoneStatus(event.id, newDoneStatus);
                 event.setExtendedProp('done', newDoneStatus);
-                event.setProp('backgroundColor', newDoneStatus ? '#d0edda' : '#75d195');
+                event.setProp(
+                  'backgroundColor',
+                  newDoneStatus
+                    ? currentPlannerTheme.eventColorDone
+                    : currentPlannerTheme.eventColor
+                );
                 event.setProp('borderColor', newDoneStatus ? '#dee2e6' : '#1c7ed6');
               } catch (error) {
                 console.error('Failed to update event done status:', error);
