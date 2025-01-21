@@ -32,6 +32,7 @@ const AppContent = () => {
               Agenda
             </Text>
             <ActionIcon
+              bg={currentPlannerTheme.primaryColor}
               variant="filled"
               size="sm"
               aria-label="Settings"
