@@ -41,14 +41,19 @@ export function SettingsPage() {
       <Group>
         <Button
           variant="outline"
-          bg={currentPlannerTheme.primaryColor}
-          c="white"
-          b={currentPlannerTheme.primaryColor}
           onClick={() => {
             navigate('/demo');
           }}
         >
           Demo
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => {
+            navigate('/startup');
+          }}
+        >
+          Startup
         </Button>
         <Button
           variant="outline"
