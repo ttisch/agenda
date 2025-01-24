@@ -2,8 +2,14 @@ import { IconCheck } from '@tabler/icons-react';
 import { Badge, Button, Card, Container, Grid, Group, Image, Text } from '@mantine/core';
 import { usePlannerTheme } from '../../contexts/PlannerThemeContext';
 
-export function PlannerThemeSelector() {
+export function PlannerThemeSelector({ onThemeSelected }: { onThemeSelected: () => void }) {
   const { currentPlannerTheme, setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
+
+  const _onThemeSelected = (plannerTheme: any) => {
+    console.log('Theme selected', plannerTheme);
+    setPlannerTheme(plannerTheme);
+    onThemeSelected && onThemeSelected();
+  };
 
   return (
     <>
@@ -11,7 +17,14 @@ export function PlannerThemeSelector() {
       <Grid>
         {availablePlannerThemes.map((plannerTheme) => (
           <Grid.Col span={3}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Card
+              shadow="sm"
+              padding="lg"
+              radius="md"
+              withBorder
+              style={{ cursor: 'pointer', height: '270px' }}
+              onClick={() => _onThemeSelected(plannerTheme)}
+            >
               <Card.Section>
                 <Image src={plannerTheme.thumbnail} height={160} alt="Chilling Green" />
               </Card.Section>
@@ -19,7 +32,7 @@ export function PlannerThemeSelector() {
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>
                   {plannerTheme.name}&nbsp;
-                  {currentPlannerTheme.code === plannerTheme.code && <IconCheck />}
+                  {/* {currentPlannerTheme.code === plannerTheme.code && <IconCheck />} */}
                 </Text>
                 {/* <Badge color="pink">On Sale</Badge> */}
               </Group>
@@ -28,16 +41,16 @@ export function PlannerThemeSelector() {
                 {plannerTheme.description}
               </Text>
 
-              <Button
+              {/* <Button
                 size="xs"
                 color={plannerTheme.primaryColor}
                 fullWidth
                 mt="md"
                 radius="md"
-                onClick={() => setPlannerTheme(plannerTheme)}
+                onClick={() => }
               >
                 Select
-              </Button>
+              </Button> */}
             </Card>
           </Grid.Col>
         ))}
