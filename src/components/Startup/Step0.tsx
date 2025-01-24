@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useWizard } from 'react-use-wizard';
 import { Container, Image, Progress } from '@mantine/core';
 
 export default function Step0({ agendaImg: agendaImg }: { agendaImg: string }) {
   const [progress, setProgress] = useState(0);
+  const { handleStep, previousStep, nextStep } = useWizard();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
+          nextStep();
           return 100;
         }
         return prev + 2;
