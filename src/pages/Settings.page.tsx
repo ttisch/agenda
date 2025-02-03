@@ -11,16 +11,14 @@ export function SettingsPage() {
   return (
     <Container size="xl" p="md" pb="xl">
       <Stack gap="lg">
-        <Title order={2}>Settings</Title>
-
         <Grid gutter="md">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Card withBorder shadow="sm" padding="md">
               <Stack gap="md">
-                <Title order={4}>Language & Theme</Title>
+                <Title order={4}>Locale & Theme</Title>
                 <div>
                   <Text size="sm" fw={500} mb={8}>
-                    Language
+                    Locale
                   </Text>
                   <LanguageSelector />
                 </div>
