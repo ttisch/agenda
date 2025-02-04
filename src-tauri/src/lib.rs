@@ -1,4 +1,5 @@
 use tauri::menu::{AboutMetadata, MenuBuilder, MenuItemBuilder, SubmenuBuilder};
+use tauri::Emitter;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -52,7 +53,7 @@ pub fn run() {
             app.on_menu_event(move |app, event| {
                 if event.id() == settings.id() {
                     // emit a window event to the frontend 
-                    let _event = app.emit("custom-event", "/settings");
+                    let _event = app.emit("navigate", "/settings");
                 }
             });
 

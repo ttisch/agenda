@@ -20,7 +20,7 @@ const AppContent = () => {
 
   useEffect(() => {
     // listen for Tauri events
-    const unlisten = listen('go-to', (e: { payload: string }) => {
+    const unlisten = listen('navigate', (e: { payload: string }) => {
       console.log('An event occurred: ', e);
       navigate(e.payload);
     });
