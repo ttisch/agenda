@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 
 import { useEffect, useState } from 'react';
 import { IconAdjustments } from '@tabler/icons-react';
+import { listen } from '@tauri-apps/api/event';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
@@ -16,6 +17,21 @@ import './styles.css';
 const AppContent = () => {
   const navigate = useNavigate();
   const { currentPlannerTheme } = usePlannerTheme();
+
+  useEffect(() => {
+    // listen for Tauri events
+    const unlisten = listen('go-to', (e: { payload: string }) => {
+      console.log('An event occurred: ', e);
+      navigate(e.payload);
+    });
+
+    return () => {
+      if (unlisten === undefined) {
+        return;
+      }
+      unlisten.catch(console.error);
+    };
+  }, []);
 
   return (
     <AppShell header={{ height: 30 }}>
