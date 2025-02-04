@@ -34,8 +34,8 @@ const AppContent = () => {
   }, []);
 
   return (
-    <AppShell header={{ height: 30 }}>
-      <AppShell.Header>
+    <AppShell>
+      {/* <AppShell.Header>
         <Container>
           <div
             style={{
@@ -58,7 +58,7 @@ const AppContent = () => {
             </ActionIcon>
           </div>
         </Container>
-      </AppShell.Header>
+      </AppShell.Header> */}
       <AppShell.Main className={currentPlannerTheme.code}>
         <Container>
           <Outlet />
