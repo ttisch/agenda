@@ -283,6 +283,7 @@ export function TaskScheduler() {
             weekends={false}
             select={handleDateSelect}
             eventContent={(e) => renderEventContent(e, setDeleteModal, currentPlannerTheme)}
+            eventBackgroundColor={currentPlannerTheme.eventColor}
             eventClick={(clickInfo) => {
               setEventModal({
                 isOpen: true,
