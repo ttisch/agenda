@@ -2,13 +2,14 @@ import '@mantine/core/styles.css';
 
 import { useEffect, useState } from 'react';
 import { listen } from '@tauri-apps/api/event';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { PlannerThemeProvider, usePlannerTheme } from './contexts/PlannerThemeContext';
 import { reschedule } from './services/events';
+import { isInitialStartup } from './services/startup';
 import { theme } from './theme';
 
 import './styles.css';
@@ -17,8 +18,17 @@ const AppContent = () => {
   const navigate = useNavigate();
   const { currentPlannerTheme } = usePlannerTheme();
 
+  const location = useLocation();
+
   useEffect(() => {
-    // listen for Tauri events
+    // Check for initial startup
+    if (location.pathname === '/' && isInitialStartup()) {
+      navigate('/startup');
+    }
+  }, []);
+
+  useEffect(() => {
+    // Listen for Tauri events
     const unlisten = listen('navigate', (e: { payload: string }) => {
       console.log('An event occurred: ', e);
       navigate(e.payload);
