@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card, Container, Grid, Group, Stack, Text, Title } from '@mantine/core';
 import { PlannerThemeSelector } from '@/components/ColorSchemeToggle/PlannerThemeSelector';
 import { BusinessHoursSelector } from '../components/BusinessHoursSelector/BusinessHoursSelector';
@@ -9,7 +9,20 @@ export function SettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <Container size="xl" p="md" pb="xl">
+    <Container size="xl" p="md" pb="xl" h="calc(100vh - 40px)" style={{ overflowY: 'auto' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 'var(--mantine-spacing-xl)',
+        }}
+      >
+        <Title order={1}>Settings</Title>
+        <Button component={Link} to="/" variant="filled">
+          Back to Home
+        </Button>
+      </div>
       <Stack gap="lg">
         <Grid gutter="md">
           <Grid.Col span={{ base: 12, md: 6 }}>
@@ -50,9 +63,6 @@ export function SettingsPage() {
           <Stack gap="md">
             <Title order={4}>Navigation</Title>
             <Group wrap="wrap" gap="xs">
-              <Button variant="filled" onClick={() => navigate('/')}>
-                Back to Home
-              </Button>
               <Button variant="light" onClick={() => navigate('/demo')}>
                 Demo
               </Button>
