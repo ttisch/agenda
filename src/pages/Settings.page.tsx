@@ -9,7 +9,7 @@ export function SettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <Container size="xl" p="md" pb="xl" h="calc(100vh - 40px)" style={{ overflowY: 'auto' }}>
+    <Container size="xl" p="md" pb="xl">
       <div
         style={{
           display: 'flex',
@@ -23,7 +23,7 @@ export function SettingsPage() {
           Back to Home
         </Button>
       </div>
-      <Stack gap="lg">
+      <Stack gap="lg" h="calc(100vh - 180px)" style={{ overflowY: 'auto' }}>
         <Grid gutter="md">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Card withBorder shadow="sm" padding="md">
@@ -57,24 +57,26 @@ export function SettingsPage() {
               </Stack>
             </Card>
           </Grid.Col>
-        </Grid>
 
-        <Card withBorder shadow="sm" padding="md">
-          <Stack gap="md">
-            <Title order={4}>Navigation</Title>
-            <Group wrap="wrap" gap="xs">
-              <Button variant="light" onClick={() => navigate('/demo')}>
-                Demo
-              </Button>
-              <Button variant="light" onClick={() => navigate('/startup')}>
-                Startup
-              </Button>
-              <Button variant="light" onClick={() => navigate('/changelog')}>
-                Changelog
-              </Button>
-            </Group>
-          </Stack>
-        </Card>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Card withBorder shadow="sm" padding="md">
+              <Stack gap="md">
+                <Title order={4}>Navigation</Title>
+                <Group wrap="wrap" gap="xs">
+                  <Button variant="light" onClick={() => navigate('/demo')}>
+                    Demo
+                  </Button>
+                  <Button variant="light" onClick={() => navigate('/startup')}>
+                    Startup
+                  </Button>
+                  <Button variant="light" onClick={() => navigate('/changelog')}>
+                    Changelog
+                  </Button>
+                </Group>
+              </Stack>
+            </Card>
+          </Grid.Col>
+        </Grid>
       </Stack>
     </Container>
   );
