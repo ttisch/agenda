@@ -1,10 +1,9 @@
 import '@mantine/core/styles.css';
 
 import { useEffect, useState } from 'react';
-import { IconAdjustments } from '@tabler/icons-react';
 import { listen } from '@tauri-apps/api/event';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -68,11 +67,13 @@ const AppContent = () => {
         <Container>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Text size="xs" c="gray">
-              © {new Date().getFullYear()} tisch.systems - MIT License
+              © {new Date().getFullYear()} MIT License - ts
             </Text>
-            <Text size="xs" c="gray">
-              v{pkg.version}
-            </Text>
+            <Link to="/changelog" style={{ textDecoration: 'none' }}>
+              <Text size="xs" c="gray" style={{ cursor: 'pointer' }}>
+                v{pkg.version}
+              </Text>
+            </Link>
           </div>
         </Container>
       </AppShell.Footer>
