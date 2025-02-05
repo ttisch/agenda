@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWizard } from 'react-use-wizard';
 import { Container, Image, Progress } from '@mantine/core';
+import StepTransition from './StepTransition';
 
 export default function StepLoader({ agendaImg: agendaImg }: { agendaImg: string }) {
   const [progress, setProgress] = useState(0);
-  const { handleStep, previousStep, nextStep } = useWizard();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +23,13 @@ export default function StepLoader({ agendaImg: agendaImg }: { agendaImg: string
     return () => clearInterval(timer);
   }, []);
   return (
-    <>
+    <StepTransition>
       <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Image src={agendaImg} alt="Agenda" style={{ width: '500px' }} />
       </Container>
       <Container>
         <Progress value={progress} />
       </Container>
-    </>
+    </StepTransition>
   );
 }
