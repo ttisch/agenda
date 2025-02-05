@@ -425,7 +425,7 @@ function renderEventContent(
       </div>
       <div
         style={{
-          fontSize: '0.75rem',
+          fontSize: '0.95rem',
           fontWeight: 400,
           color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
           overflow: 'hidden',
