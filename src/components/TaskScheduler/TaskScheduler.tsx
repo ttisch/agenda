@@ -431,7 +431,7 @@ function renderEventContent(
           color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
+          // whiteSpace: 'nowrap',
         }}
       >
         {eventInfo.event.title}

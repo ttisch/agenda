@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Image, Progress } from '@mantine/core';
-import { completeInitialStartup } from '@/services/startup';
+import { addDemoEventsIfNeeded, completeInitialStartup } from '@/services/startup';
 import StepTransition from './StepTransition';
 
 export default function StepLoader({ agendaImg: agendaImg }: { agendaImg: string }) {
@@ -13,8 +13,10 @@ export default function StepLoader({ agendaImg: agendaImg }: { agendaImg: string
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          completeInitialStartup();
-          navigate('/');
+          addDemoEventsIfNeeded().then(() => {
+            completeInitialStartup();
+            navigate('/');
+          });
           return 100;
         }
         return prev + 2;

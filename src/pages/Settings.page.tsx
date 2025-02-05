@@ -76,6 +76,30 @@ export function SettingsPage() {
               </Stack>
             </Card>
           </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <Card withBorder shadow="sm" padding="md">
+              <Stack gap="md">
+                <Title order={4}>Reset Application</Title>
+                <Text size="sm" c="dimmed">
+                  Clear all settings and return to the startup wizard. This will reset your
+                  preferences but won't delete your events.
+                </Text>
+                <Group>
+                  <Button
+                    variant="light"
+                    color="red"
+                    onClick={() => {
+                      localStorage.clear();
+                      navigate('/startup');
+                    }}
+                  >
+                    Reset Settings
+                  </Button>
+                </Group>
+              </Stack>
+            </Card>
+          </Grid.Col>
         </Grid>
       </Stack>
     </Container>
