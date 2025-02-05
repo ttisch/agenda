@@ -21,7 +21,7 @@ export default function StepLoader({ agendaImg: agendaImg }: { agendaImg: string
         }
         return prev + 2;
       });
-    }, 60); // 60ms * 50 steps = 3000ms (3 seconds)
+    }, 30); // 30ms * 50 steps = 1500ms (1.5 seconds)
 
     return () => clearInterval(timer);
   }, []);
