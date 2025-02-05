@@ -15,7 +15,6 @@ export function SettingsPage() {
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Card withBorder shadow="sm" padding="md">
               <Stack gap="md">
-                <Title order={4}>Locale & Theme</Title>
                 <div>
                   <Text size="sm" fw={500} mb={8}>
                     Locale
@@ -36,7 +35,6 @@ export function SettingsPage() {
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Card withBorder shadow="sm" padding="md">
               <Stack gap="md">
-                <Title order={4}>Schedule Settings</Title>
                 <div>
                   <Text size="sm" fw={500} mb={8}>
                     Business Hours
@@ -52,6 +50,9 @@ export function SettingsPage() {
           <Stack gap="md">
             <Title order={4}>Navigation</Title>
             <Group wrap="wrap" gap="xs">
+              <Button variant="filled" onClick={() => navigate('/')}>
+                Back to Home
+              </Button>
               <Button variant="light" onClick={() => navigate('/demo')}>
                 Demo
               </Button>
@@ -64,12 +65,6 @@ export function SettingsPage() {
             </Group>
           </Stack>
         </Card>
-
-        <Group justify="flex-end" wrap="wrap" gap="xs">
-          <Button variant="filled" onClick={() => navigate('/')}>
-            Back to Home
-          </Button>
-        </Group>
       </Stack>
     </Container>
   );
