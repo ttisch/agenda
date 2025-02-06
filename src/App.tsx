@@ -1,14 +1,15 @@
 import '@mantine/core/styles.css';
 
 import { useEffect, useState } from 'react';
-import { IconAdjustments } from '@tabler/icons-react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { ActionIcon, AppShell, Container, MantineProvider, Text } from '@mantine/core';
+import { listen } from '@tauri-apps/api/event';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { PlannerThemeProvider, usePlannerTheme } from './contexts/PlannerThemeContext';
 import { reschedule } from './services/events';
+import { isInitialStartup } from './services/startup';
 import { theme } from './theme';
 
 import './styles.css';
@@ -17,9 +18,33 @@ const AppContent = () => {
   const navigate = useNavigate();
   const { currentPlannerTheme } = usePlannerTheme();
 
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check for initial startup
+    if (location.pathname === '/' && isInitialStartup()) {
+      navigate('/startup');
+    }
+  }, []);
+
+  useEffect(() => {
+    // Listen for Tauri events
+    const unlisten = listen('navigate', (e: { payload: string }) => {
+      console.log('An event occurred: ', e);
+      navigate(e.payload);
+    });
+
+    return () => {
+      if (unlisten === undefined) {
+        return;
+      }
+      unlisten.catch(console.error);
+    };
+  }, []);
+
   return (
-    <AppShell header={{ height: 30 }}>
-      <AppShell.Header>
+    <AppShell>
+      {/* <AppShell.Header>
         <Container>
           <div
             style={{
@@ -42,7 +67,7 @@ const AppContent = () => {
             </ActionIcon>
           </div>
         </Container>
-      </AppShell.Header>
+      </AppShell.Header> */}
       <AppShell.Main className={currentPlannerTheme.code}>
         <Container>
           <Outlet />
@@ -52,11 +77,13 @@ const AppContent = () => {
         <Container>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Text size="xs" c="gray">
-              © {new Date().getFullYear()} tisch.systems - MIT License
+              © {new Date().getFullYear()} MIT License - ts
             </Text>
-            <Text size="xs" c="gray">
-              v{pkg.version}
-            </Text>
+            <Link to="/changelog" style={{ textDecoration: 'none' }}>
+              <Text size="xs" c="gray" style={{ cursor: 'pointer' }}>
+                v{pkg.version}
+              </Text>
+            </Link>
           </div>
         </Container>
       </AppShell.Footer>

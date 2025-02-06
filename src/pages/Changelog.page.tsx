@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Container, Paper, Stack, Text, Title } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { Button, Container, Paper, Stack, Text, Title } from '@mantine/core';
+import { usePlannerTheme } from '@/contexts/PlannerThemeContext';
 
 interface ChangelogEntry {
   version: string;
@@ -38,6 +40,7 @@ function parseChangelog(content: string): ChangelogEntry[] {
 
 export function ChangelogPage() {
   const [entries, setEntries] = useState<ChangelogEntry[]>([]);
+  const plannerTheme = usePlannerTheme();
 
   useEffect(() => {
     // Using Vite's dynamic import to load the changelog at runtime
@@ -49,10 +52,20 @@ export function ChangelogPage() {
 
   return (
     <Container size="sm" py="xl">
-      <Title order={1} mb="xl">
-        Changelog
-      </Title>
-      <Stack gap="md">
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 'var(--mantine-spacing-xl)',
+        }}
+      >
+        <Title order={1}>Changelog</Title>
+        <Button component={Link} to="/" variant="filled">
+          Back to Home
+        </Button>
+      </div>
+      <Stack gap="md" h="calc(100vh - 200px)" style={{ overflowY: 'auto' }}>
         {entries.map((entry) => (
           <Paper key={entry.version} p="md" withBorder>
             <Title order={2} size="h3">

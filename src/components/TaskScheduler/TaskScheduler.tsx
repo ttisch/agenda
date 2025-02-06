@@ -282,7 +282,8 @@ export function TaskScheduler() {
             dayMaxEvents
             weekends={false}
             select={handleDateSelect}
-            eventContent={(e) => renderEventContent(e, setDeleteModal, theme, currentPlannerTheme)}
+            eventContent={(e) => renderEventContent(e, setDeleteModal, currentPlannerTheme)}
+            eventBackgroundColor={currentPlannerTheme.eventColor}
             eventClick={(clickInfo) => {
               setEventModal({
                 isOpen: true,
@@ -349,7 +350,6 @@ export function TaskScheduler() {
 function renderEventContent(
   eventInfo: any,
   setDeleteModal: any,
-  theme: any,
   currentPlannerTheme: PlannerTheme
 ) {
   const isDone = eventInfo.event.extendedProps.done as boolean;
@@ -383,8 +383,8 @@ function renderEventContent(
         <div style={{ display: 'flex', gap: '2px' }}>
           <ActionIcon
             size="xs"
-            color={isDone ? 'gray' : 'green'}
-            variant="outline"
+            color={isDone ? 'gray' : 'white'}
+            variant="subtle"
             onClick={async (e) => {
               e.stopPropagation();
 
@@ -392,10 +392,6 @@ function renderEventContent(
               const newDoneStatus = !isDone;
 
               try {
-                /*
-                ? hexToRgba(theme.colors.green[3], 0.46)
-                : hexToRgba(theme.colors.green[7], 0.46),
-                */
                 await updateEventDoneStatus(event.id, newDoneStatus);
                 event.setExtendedProp('done', newDoneStatus);
                 event.setProp(
@@ -414,7 +410,7 @@ function renderEventContent(
           </ActionIcon>
           <ActionIcon
             size="xs"
-            color="red"
+            color={isDone ? 'gray' : 'white'}
             variant="subtle"
             onClick={(e) => {
               e.stopPropagation();
@@ -430,12 +426,12 @@ function renderEventContent(
       </div>
       <div
         style={{
-          fontSize: '0.75rem',
+          fontSize: '0.95rem',
           fontWeight: 400,
           color: isDone ? 'var(--mantine-color-gray-6)' : 'inherit',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
+          // whiteSpace: 'nowrap',
         }}
       >
         {eventInfo.event.title}

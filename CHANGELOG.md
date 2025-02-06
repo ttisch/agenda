@@ -1,5 +1,11 @@
 # mantine-vite-template
 
+## 0.0.5
+
+### Patch Changes
+
+- UI Improvements
+
 ## 0.0.4
 
 ### Patch Changes

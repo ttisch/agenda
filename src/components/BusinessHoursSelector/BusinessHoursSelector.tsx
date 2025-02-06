@@ -1,4 +1,4 @@
-import { Checkbox, Group, Stack } from '@mantine/core';
+import { Checkbox, Group, SimpleGrid, Stack } from '@mantine/core';
 import { TimeInput } from '@mantine/dates';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 
@@ -41,24 +41,26 @@ export function BusinessHoursSelector() {
           }}
         />
       </Group>
-      <Stack gap="xs">
+      <SimpleGrid cols={5}>
         {WEEKDAYS.map((day) => (
-          <Checkbox
-            key={day.value}
-            label={day.label}
-            checked={businessHours.workDays.includes(day.value)}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              const checked = event.currentTarget.checked;
-              setBusinessHours({
-                ...businessHours,
-                workDays: checked
-                  ? [...businessHours.workDays, day.value].sort()
-                  : businessHours.workDays.filter((d) => d !== day.value),
-              });
-            }}
-          />
+          <div>
+            <Checkbox
+              key={day.value}
+              label={day.label}
+              checked={businessHours.workDays.includes(day.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                const checked = event.currentTarget.checked;
+                setBusinessHours({
+                  ...businessHours,
+                  workDays: checked
+                    ? [...businessHours.workDays, day.value].sort()
+                    : businessHours.workDays.filter((d) => d !== day.value),
+                });
+              }}
+            />
+          </div>
         ))}
-      </Stack>
+      </SimpleGrid>
     </Stack>
   );
 }

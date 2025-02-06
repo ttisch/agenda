@@ -53,8 +53,8 @@ export function PlannerThemeProvider({ children }: { children: ReactNode }) {
       thumbnail: leavesImage,
       description: 'Like a calm, bug-free code review—chill, but functional.',
       primaryColor: 'green',
-      eventColor: hexToRgba(theme.colors.green[7], 0.46),
-      eventColorDone: hexToRgba(theme.colors.green[3], 0.46),
+      eventColor: hexToRgba(theme.colors.green[7], 0.92),
+      eventColorDone: hexToRgba(theme.colors.green[3], 0.92),
     },
     {
       code: 'seascape',
@@ -62,8 +62,8 @@ export function PlannerThemeProvider({ children }: { children: ReactNode }) {
       thumbnail: seaImage,
       description: 'Cool and collected—just like you when debugging at 3 a.m.',
       primaryColor: 'blue',
-      eventColor: hexToRgba(theme.colors.blue[7], 0.46),
-      eventColorDone: hexToRgba(theme.colors.blue[3], 0.46),
+      eventColor: hexToRgba(theme.colors.blue[7], 0.92),
+      eventColorDone: hexToRgba(theme.colors.blue[3], 0.92),
     },
     {
       code: 'orange',
@@ -71,8 +71,8 @@ export function PlannerThemeProvider({ children }: { children: ReactNode }) {
       thumbnail: orangeImage,
       description: 'Bright, bold, and ready to launch—because why wait for the weekend?',
       primaryColor: 'orange',
-      eventColor: hexToRgba(theme.colors.orange[7], 0.46),
-      eventColorDone: hexToRgba(theme.colors.orange[3], 0.46),
+      eventColor: hexToRgba(theme.colors.orange[7], 0.92),
+      eventColorDone: hexToRgba(theme.colors.orange[3], 0.92),
     },
     {
       code: 'minimalist',
@@ -80,8 +80,8 @@ export function PlannerThemeProvider({ children }: { children: ReactNode }) {
       thumbnail: minimalistImage,
       description: 'Just give me the facts, dude ...',
       primaryColor: 'gray',
-      eventColor: hexToRgba(theme.colors.gray[7], 0.46),
-      eventColorDone: hexToRgba(theme.colors.gray[3], 0.46),
+      eventColor: hexToRgba(theme.colors.gray[7], 0.92),
+      eventColorDone: hexToRgba(theme.colors.gray[3], 0.92),
     },
   ];
   const [currentPlannerTheme, setCurrentPlannerTheme] = useState<PlannerTheme>(() => {

@@ -75,7 +75,7 @@ main::before {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-image: url('assets/leaves.jpg'); */
+  background-image: url('assets/minimalist.jpg');
   background-size: cover;
   background-position: center;
   filter: saturate(0.5) opacity(0.5); /* Apply saturation to the background image */
