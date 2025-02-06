@@ -37,14 +37,14 @@ export async function addDemoEventsIfNeeded(): Promise<void> {
       {
         title: 'Welcome to Planner! 👋',
         start: today.toISOString(),
-        end: new Date(today.getTime() + 60 * 60000).toISOString(), // 30 min duration
+        end: new Date(today.getTime() + 90 * 60000).toISOString(),
         allDay: false,
         done: false,
       },
       {
         title: 'Project kickoff meeting',
-        start: new Date(today.getTime() + 60 * 60000).toISOString(), // 1 hour after welcome
-        end: new Date(today.getTime() + 120 * 60000).toISOString(), // 1 hour duration
+        start: new Date(today.getTime() + 90 * 60000).toISOString(), // 1.5 hours after welcome
+        end: new Date(today.getTime() + 150 * 60000).toISOString(), // 1 hour duration
         allDay: false,
         done: false,
       },
