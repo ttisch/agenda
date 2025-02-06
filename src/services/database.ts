@@ -4,7 +4,7 @@ let db: Database | null = null;
 
 export async function initDatabase() {
   if (!db) {
-    db = await Database.load('sqlite:planner2.db');
+    db = await Database.load('sqlite:agenda.db');
     await db.execute(`
       CREATE TABLE IF NOT EXISTS events (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

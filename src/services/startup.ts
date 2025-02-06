@@ -21,57 +21,103 @@ export function completeInitialStartup(): void {
 
 export async function addDemoEventsIfNeeded(): Promise<void> {
   const events = (await getEvents()) as Event[];
+  console.log('Existing events:', events);
   if (events.length === 0) {
-    const today = new Date();
-    today.setHours(9, 0, 0, 0); // Start at 9 AM
+    // Get current date
+    const now = new Date();
 
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(10, 0, 0, 0); // Start at 10 AM
+    // Find the Monday of the current week
+    const monday = new Date(now);
+    monday.setDate(monday.getDate() - monday.getDay() + 1);
 
-    const dayAfterTomorrow = new Date(tomorrow);
-    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
-    dayAfterTomorrow.setHours(11, 0, 0, 0); // Start at 11 AM
+    // Create dates for each weekday
+    const weekDays = Array.from({ length: 5 }, (_, i) => {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      return date;
+    });
 
+    // Set reasonable times within business hours (7:00-16:00)
     const demoEvents = [
       {
         title: 'Welcome to Planner! 👋',
-        start: today.toISOString(),
-        end: new Date(today.getTime() + 90 * 60000).toISOString(),
+        start: (() => {
+          const date = weekDays[0]; // Monday
+          date.setHours(9, 0, 0, 0);
+          return date.toISOString();
+        })(),
+        end: (() => {
+          const date = weekDays[0];
+          date.setHours(10, 30, 0, 0);
+          return date.toISOString();
+        })(),
         allDay: false,
         done: false,
       },
       {
         title: 'Project kickoff meeting',
-        start: new Date(today.getTime() + 90 * 60000).toISOString(), // 1.5 hours after welcome
-        end: new Date(today.getTime() + 150 * 60000).toISOString(), // 1 hour duration
+        start: (() => {
+          const date = weekDays[1]; // Tuesday
+          date.setHours(10, 0, 0, 0);
+          return date.toISOString();
+        })(),
+        end: (() => {
+          const date = weekDays[1];
+          date.setHours(11, 0, 0, 0);
+          return date.toISOString();
+        })(),
         allDay: false,
         done: false,
       },
       {
         title: 'Review Q1 goals',
-        start: tomorrow.toISOString(),
-        end: new Date(tomorrow.getTime() + 60 * 60000).toISOString(), // 1 hour duration
+        start: (() => {
+          const date = weekDays[2]; // Wednesday
+          date.setHours(11, 0, 0, 0);
+          return date.toISOString();
+        })(),
+        end: (() => {
+          const date = weekDays[2];
+          date.setHours(12, 0, 0, 0);
+          return date.toISOString();
+        })(),
         allDay: false,
         done: false,
       },
       {
         title: 'Team sync meeting',
-        start: new Date(tomorrow.getTime() + 180 * 60000).toISOString(), // 3 hours after Q1 review
-        end: new Date(tomorrow.getTime() + 240 * 60000).toISOString(), // 30 min duration
+        start: (() => {
+          const date = weekDays[3]; // Thursday
+          date.setHours(13, 0, 0, 0);
+          return date.toISOString();
+        })(),
+        end: (() => {
+          const date = weekDays[3];
+          date.setHours(14, 0, 0, 0);
+          return date.toISOString();
+        })(),
         allDay: false,
         done: false,
       },
       {
         title: 'Client presentation',
-        start: dayAfterTomorrow.toISOString(),
-        end: new Date(dayAfterTomorrow.getTime() + 90 * 60000).toISOString(), // 1.5 hours duration
+        start: (() => {
+          const date = weekDays[4]; // Friday
+          date.setHours(14, 0, 0, 0);
+          return date.toISOString();
+        })(),
+        end: (() => {
+          const date = weekDays[4];
+          date.setHours(15, 30, 0, 0);
+          return date.toISOString();
+        })(),
         allDay: false,
         done: false,
       },
     ];
 
     for (const event of demoEvents) {
+      console.log('Adding event:', event);
       await addEvent(event);
     }
   }
