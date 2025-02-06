@@ -4,9 +4,11 @@ import { PlannerThemeSelector } from '@/components/ColorSchemeToggle/PlannerThem
 import { BusinessHoursSelector } from '../components/BusinessHoursSelector/BusinessHoursSelector';
 // import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import { LanguageSelector } from '../components/LanguageSelector/LanguageSelector';
+import { useTour } from '../contexts/TourContext';
 
 export function SettingsPage() {
   const navigate = useNavigate();
+  const { startTour } = useTour();
 
   return (
     <Container size="xl" p="md" pb="xl">
@@ -80,12 +82,14 @@ export function SettingsPage() {
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Card withBorder shadow="sm" padding="md">
               <Stack gap="md">
-                <Title order={4}>Reset Application</Title>
+                <Title order={4}>Help & Reset</Title>
                 <Text size="sm" c="dimmed">
-                  Clear all settings and return to the startup wizard. This will reset your
-                  preferences but won't delete your events.
+                  Take a tour of the application or reset your settings to start fresh.
                 </Text>
                 <Group>
+                  <Button variant="light" onClick={() => startTour()}>
+                    Start Tour
+                  </Button>
                   <Button
                     variant="light"
                     color="red"

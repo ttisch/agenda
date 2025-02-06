@@ -5,9 +5,11 @@ import { listen } from '@tauri-apps/api/event';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppShell, Container, MantineProvider, Text } from '@mantine/core';
 import * as pkg from '../package.json';
+import TourGuide from './components/TourGuide/TourGuide';
 import { BusinessHoursProvider } from './contexts/BusinessHoursContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { PlannerThemeProvider, usePlannerTheme } from './contexts/PlannerThemeContext';
+import { TourProvider } from './contexts/TourContext';
 import { reschedule } from './services/events';
 import { isInitialStartup } from './services/startup';
 import { theme } from './theme';
@@ -108,13 +110,16 @@ export default function App() {
 
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
-      <LanguageProvider>
-        <PlannerThemeProvider>
-          <BusinessHoursProvider>
-            <AppContent />
-          </BusinessHoursProvider>
-        </PlannerThemeProvider>
-      </LanguageProvider>
+      <TourProvider>
+        <LanguageProvider>
+          <PlannerThemeProvider>
+            <BusinessHoursProvider>
+              <AppContent />
+              <TourGuide />
+            </BusinessHoursProvider>
+          </PlannerThemeProvider>
+        </LanguageProvider>
+      </TourProvider>
     </MantineProvider>
   );
 }

@@ -1,9 +1,8 @@
-import { IconCheck } from '@tabler/icons-react';
-import { Badge, Button, Card, Container, Grid, Group, Image, Text } from '@mantine/core';
+import { Card, Grid, Group, Image, Text } from '@mantine/core';
 import { usePlannerTheme } from '../../contexts/PlannerThemeContext';
 
 export function PlannerThemeSelector({ onThemeSelected }: { onThemeSelected: () => void }) {
-  const { currentPlannerTheme, setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
+  const { setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
 
   const _onThemeSelected = (plannerTheme: any) => {
     console.log('Theme selected', plannerTheme);
@@ -14,7 +13,7 @@ export function PlannerThemeSelector({ onThemeSelected }: { onThemeSelected: () 
   return (
     <>
       {/* <Container> */}
-      <Grid>
+      <Grid data-tour="theme-selector">
         {availablePlannerThemes.map((plannerTheme) => (
           <Grid.Col span={3}>
             <Card

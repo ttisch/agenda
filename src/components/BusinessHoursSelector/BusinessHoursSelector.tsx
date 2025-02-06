@@ -16,7 +16,7 @@ export function BusinessHoursSelector() {
   const { businessHours, setBusinessHours } = useBusinessHours();
 
   return (
-    <Stack gap="sm">
+    <Stack gap="sm" data-tour="business-hours">
       <Group>
         <TimeInput
           label="Start Time"

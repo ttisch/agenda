@@ -6,7 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { IconCheck, IconTrash } from '@tabler/icons-react';
-import { ActionIcon, Button, Group, Modal, Text, TextInput, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Button, Group, Modal, Text, TextInput } from '@mantine/core';
 import { PlannerTheme, usePlannerTheme } from '@/contexts/PlannerThemeContext';
 import { useBusinessHours } from '../../contexts/BusinessHoursContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -144,8 +144,7 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, eventTitle = '' }
 }
 
 export function TaskScheduler() {
-  const theme = useMantineTheme();
-  const { currentPlannerTheme, setPlannerTheme, availablePlannerThemes } = usePlannerTheme();
+  const { currentPlannerTheme } = usePlannerTheme();
   const [_currentEvents, setCurrentEvents] = useState<any[]>([]);
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
@@ -255,7 +254,7 @@ export function TaskScheduler() {
   return (
     <div className="demo-app">
       <div className="demo-app-main">
-        <div className={styles.calendarContainer}>
+        <div className={styles.calendarContainer} data-tour="task-scheduler">
           <FullCalendar
             ref={calendarRef}
             locales={[deLocale, enLocale]}
