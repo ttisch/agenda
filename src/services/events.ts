@@ -6,7 +6,38 @@ import {
   updateEvent,
 } from './database';
 
+function wasRescheduledToday(): boolean {
+  const lastRescheduled = localStorage.getItem('lastRescheduled');
+  if (!lastRescheduled) {
+    return false;
+  }
+
+  const lastDate = new Date(lastRescheduled);
+  const today = new Date();
+
+  return (
+    lastDate.getFullYear() === today.getFullYear() &&
+    lastDate.getMonth() === today.getMonth() &&
+    lastDate.getDate() === today.getDate()
+  );
+}
+
+// Initialize focus event listener
+if (typeof window !== 'undefined') {
+  window.addEventListener('focus', async () => {
+    console.log('Window focused');
+    if (!wasRescheduledToday()) {
+      await reschedule();
+      // reload window
+      window.location.reload();
+    }
+  });
+}
+
 export async function reschedule() {
+  // Update last rescheduled timestamp
+  localStorage.setItem('lastRescheduled', new Date().toISOString());
+
   // Get undone events before now
   const undoneEvents = (await getUndoneEventsBefore(new Date().toISOString())) as any[];
   console.log('undoneEvents', undoneEvents);
