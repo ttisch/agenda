@@ -1,5 +1,11 @@
 # mantine-vite-template
 
+## 0.0.6
+
+### Patch Changes
+
+- Reschedule events on resume
+
 ## 0.0.5
 
 ### Patch Changes
